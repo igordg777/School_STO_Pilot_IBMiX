@@ -81,17 +81,19 @@ class Login extends Component {
     }
     const {getFieldDecorator} = this.props.form;
     return (
-        <div className="login-page">
-          <Card className='login-form'>
-            <div className='login-head'>
-
-              <h3>Введите<br/>
-                свои данные</h3>
-              <img src={loginHeadMask} alt=""/>
+        <div className="loginForm">
+          <Card style={{
+            borderRadius: '20px',
+            marginTop: '5%',
+            marginBottom: '11%',
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <img style={{ width: '130px' }} src={logo} alt="" />
+              <h3 style={{ color: '#4a76a8' }}>Добро пожаловать в Pilot-Req</h3>
             </div>
-            <br/>
+            <br />
             <Form onSubmit={this.handleSubmit}>
-              <Form.Item className='flex-form'>
+              <Form.Item>
                 {getFieldDecorator('email', {
                   rules: [
                     {
@@ -100,13 +102,14 @@ class Login extends Component {
                     }],
                 })(
                     <Input
-                        className='login-form--input'
+                        prefix={<Icon type="mail"
+                                      style={{ color: 'rgba(0,0,0,.25)' }} />}
                         type='mail'
                         placeholder="E-mail"
                     />,
                 )}
               </Form.Item>
-              <Form.Item className='flex-form'>
+              <Form.Item>
                 {getFieldDecorator('password', {
                   rules: [
                     {
@@ -115,25 +118,23 @@ class Login extends Component {
                     }],
                 })(
                     <Input
-                        className='login-form--input'
+                        prefix={<Icon type="lock"
+                                      style={{ color: 'rgba(0,0,0,.25)' }} />}
                         type="password"
                         placeholder="Пароль"
                     />,
                 )}
               </Form.Item>
-              <Form.Item className='flex-form'>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="primary-btn"
-                  loading={this.state.iconLoading}
-                >
+              <Form.Item>
+                <Button style={{ backgroundColor: '#4A76A8', color: '#ffffff' }}
+                        htmlType="submit" className="login-form-button"
+                        loading={this.state.iconLoading} icon='login'>
                   Войти
                 </Button>
-                <div style={{textAlign: 'center'}}>
-                  <Link to={'/signupAll'}>Регистрация</Link><br/>
-                  {/*<Link to={'/password'}>Не помню пароль</Link><br/>
-                  <Link to={'/our_company'}>О нас</Link><br/>*/}
+                <div style={{ textAlign: 'center' }}>
+                  Или <Link to={'/signupAll'}>зарегистрируйтесь</Link><br />
+                  <Link to={'/password'}>Не помню пароль</Link><br />
+                  <Link to={'/our_company'}>О нас</Link><br />
                 </div>
               </Form.Item>
             </Form>
