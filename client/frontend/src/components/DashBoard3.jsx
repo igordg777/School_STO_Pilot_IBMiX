@@ -1596,7 +1596,7 @@ class DashBoard extends Component {
                       </div>
                     </div>
                     <div>
-                      <Buttonr color="none" id={"form" + key + "toggler1"} className="userCardRed hoverCard shadow-lg">
+                      <Buttonr color="none" id={"form" + key + "toggler1"} className={user.longFly[0].flag ? "userCardGreen hoverCard shadow-lg" : "userCardRed hoverCard shadow-lg"}>
                         <font color={'#5a5a5a'}>Направление: {user.longFly[0].fly}</font>
                       </Buttonr>
                       <UncontrolledCollapse toggler={"#form" + key + "toggler1"}>
@@ -1607,7 +1607,7 @@ class DashBoard extends Component {
                         </Cardr>
                       </UncontrolledCollapse>
 
-                      <Buttonr color="none" id={"form" + key + "toggler2"} className="userCardRed hoverCard shadow-lg">
+                      <Buttonr color="none" id={"form" + key + "toggler2"} className={user.otherTime[0].flag ? "userCardGreen hoverCard shadow-lg" : "userCardRed hoverCard shadow-lg"}>
                         <font color={'#5a5a5a'}>Подработка: {user.otherTime[0].time}</font>
                       </Buttonr>
                       <UncontrolledCollapse toggler={"#form" + key + "toggler2"}>
@@ -1618,7 +1618,7 @@ class DashBoard extends Component {
                         </Cardr>
                       </UncontrolledCollapse>
 
-                      <Buttonr color="none" id={"form" + key + "toggler3"} className="userCardRed hoverCard shadow-lg">
+                      <Buttonr color="none" id={"form" + key + "toggler3"} className={user.timeFly[0].flag ? "userCardGreen hoverCard shadow-lg" : "userCardRed hoverCard shadow-lg"}>
                         <font color={'#5a5a5a'}>Продолжительность смены: {user.timeFly[0].flyTime}</font>
                       </Buttonr>
                       <UncontrolledCollapse toggler={"#form" + key + "toggler3"}>
@@ -1629,7 +1629,7 @@ class DashBoard extends Component {
                         </Cardr>
                       </UncontrolledCollapse>
 
-                      <Buttonr color="none" id={"form" + key + "toggler4"} className="userCardGreen hoverCard shadow-lg">
+                      <Buttonr color="none" id={"form" + key + "toggler4"} className={user.preferenceTimeFly[0].flag ? "userCardGreen hoverCard shadow-lg" : "userCardRed hoverCard shadow-lg"}>
                         <font color={'#5a5a5a'}>Предпочтительное время вылета: {user.preferenceTimeFly[0].dayTime}</font>
                       </Buttonr>
                       <UncontrolledCollapse toggler={"#form" + key + "toggler4"}>
@@ -1643,54 +1643,6 @@ class DashBoard extends Component {
                   </div>
 
                 </Card>)}
-
-            {/*логика отрисовки текущей заявки пользователя*/}
-            {/*<Card width='100%'
-          className="userCardW hoverCard"
-          title="Заявка на октябрь 2020 г."
-          bordered={false} style={{ width: 300 }}
-    >
-
-
-        {this.props.user.wishForm &&
-
-
-        this.props.user.wishForm.map((user, key) =>
-            <h3 style={{ float: "left" }}>
-
-                <div>
-                    <h5 style={{ float: "left" }}>
-                        Направление
-                    </h5>
-                    <h3 style={{ float: "left", color: 'blue' }}>
-                        {user.longFly}
-                    </h3>
-
-                    <h5 style={{ float: "left" }}>
-                        Продолжительность рабочей смены
-                    </h5>
-                    <h3 style={{ float: "left", color: 'blue' }}>
-                        {user.timeFly}
-                    </h3>
-
-                    <h5 style={{ float: "left" }}>
-                        Желание дополнительной подработки
-                    </h5>
-
-                    <h3 style={{ float: "left", color: 'blue' }}>
-                        {user.otherTime}
-                    </h3>
-
-                    <h5 style={{ float: "left" }}>
-                        Предпочтительное время вылета
-                    </h5>
-                    <h3 style={{ float: "left", color: 'blue' }}>
-                        {user.preferenceTimeFly}
-                    </h3>
-                </div>
-            </h3>
-        )}
-    </Card>*/}
 
           </div>
 
@@ -1792,42 +1744,6 @@ class DashBoard extends Component {
                           </p>
                         } type="info" />
                       </TabPane>
-                      <TabPane tab="Детали" key="2">
-                        <p>
-                        </p>
-                        <Alert message={
-                          <p>
-                            <div style={{ color: 'black' }}>Информация
-                                </div>
-
-                          </p>
-                        } type="info" />
-                        <Alert message={
-                          <p>
-                            <div style={{ color: 'black' }}>Заголовок</div>
-                            <div className={'fontModal'}>Информация
-                                </div>
-
-                          </p>
-                        } type="info" />
-                        <Alert message={
-                          <p>
-                            <div style={{ color: 'black' }}>Заголовок</div>
-                            <div
-                              className={'fontModal'}>Информация
-                                </div>
-                          </p>
-                        } type="info" />
-                        <Alert message={
-                          <p>
-                            <div style={{ color: 'black' }}>Заголовок</div>
-                            <div
-                              className={'fontModal'}>Информация
-                                </div>
-                          </p>
-                        } type="info" />
-                      </TabPane>
-
                     </Tabs>
                   </div>
                   {document.getElementById('container')}
@@ -1857,18 +1773,6 @@ class DashBoard extends Component {
 
                     this.props.users.response.map((user, i) => {
 
-                      // if (this.filterPrise(user.time)) {
-                      if (user.city_photo) {
-
-                        // console.log(user);
-
-                        let srcImg;
-                        if (!user.city_photo) {
-                          srcImg = user.city_photo;
-                        } else {
-                          srcImg = plane;
-                        }
-
                         let styl, depart, land;
                         let landing_blue = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAAABmJLR0QA/wD/AP+gvaeTAAACeklEQVQ4jc2U309SYRjHn/ecQ6mAB0UOIOhOxQgRNb1Q07Vps5lrq4tcG2Nr3XnVTWtr6x/oH+imy26iq7ZuWpu2fm4unWL+gB1JzAGCASoECBw4bxcUHPklbV703Lzb+7zP532e7/s8L5q2LsFpGHEqlD8gMxvpM4RLHB3ML4M+itC/gIydh49si6qWpNhBSzNPZr48ffCeUSSrxJaBCMASSrBd48QOztvCZwlGkbROcFViy0ApngKAEcuuqfOg4OCzhNvXAgCjvQFWG6sPlCEBACGwTboIkfprHiUAIITvXHWfCCLNPTNaZfKyJQAAbXTq+tCOTpXAAOFoUzAiPSPJKZtT59ujDrd6P9ZQA0QBwPq2MnTQlBdb3pQZH/COD3jTPOnYZBZc6hdzJr0q3ipPAdAnZJTmyc+rOk1rUq+KF28gsZ6JD5mDN0e3dKr4fqwxEms4SlPVQEjc2cPdAesE196WqHgUY+T20wtOzYJLHQjLaoEAgCTwlT7/5OCOQX9YoxDvT/miS/3pm84fklUGFYzVRG2T3CVDqAYOY/Rmnn3+tgtjVHXWOtTxbjZSgwIACOEbI9v3ppxQcWgRgulx9/3bKxJKKGwKAnxw6J+97lnmGD57LGpqeEfTmih9BYoUZm6tjfX7RPnDV6f25TtjXo6xfp8/JHv10TBo3uu9EGqWZrYDzYmU5BhI2sg/tC5ZzhUrWvmuss9e9OzSYu5Rmprf0M5vaAGAJHBOQCAWm1EkH99d1P1tpU2fwj5rWvcoa8tULCW/nJXkCpQfQdo+Z1zmmDoReStmRBK4i90nCby6pcS47g+tJCMAyAmo/kLK7VT/7P8L9BvboetBm/GZ3QAAAABJRU5ErkJggg==';
                         let landing_purple = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAAABmJLR0QA/wD/AP+gvaeTAAACaklEQVQ4jc2U309SYRjHn/f1QCmRIBwGQnlUGHkQlblJtraMEGutH5s31szL1mXrvq3/oeuuXeum2lwtQEc31XILiuMJUCxhSAKGuEzieE4XODkinU6bF33v3vd59tn3ed7nedH9CQEOQ/hQKLsgivpqtSbrAgZDzmLJIPQvoBMd6ZuTjzXaojigOvbj9p1Hd+891O6/lwIhEAiCGx2dFQdSKxaOI7Ta4gXvnFxQpaIEgF4nc7IjtRfgOCKdNgOAs48xmr7JApXLSgBACHy+IMa1R0wmKQBASPB4Qn8FNZ3rfaDTrTt6WQBo1ZSG3POkvgCANjZa1wtthKLSenzT1L66mLCVSmoJEAEAy8tU8bum2uyWli3XYNg1GP5VUSTiVpa1B/weA5lXqzelHaHqQKpUW1euztCOzwczeB6lUxaGoZloj4QpJJ5s2sF6vXN6stAwVRBQOt3OLpxiWXshr5MCAQDGfF//J7d73mzJSBSytkayC/aPEWcup28M2pPRmPWNzVptSxI4QUBv3wy9fDEqCOiPu2Yw5qjOLxIUAEBIGD7z7uKlV9BwaRGCEc/r8fGnBLGzd8nzKPyh//mzy/GYjeMIcf7p4fdtunWijtLUtHPt+syAKyLyD+xCTzAwUm3HgCuSz+lCobM0HevqTqpUW9lV4/bPo/tAzc3bEzeedHbVKlpMdAf85zMZk4iLyuUjTJRmojQAYMzzPAZxs7Xa4uTUNEnmq8dUyhz0e6pbIke7jpSKyq2paT2ZB4Bs1hjwj8RjNpmIqmqOMOYpagVjfmmpUxBkf2h1jgCA57H8Qg7qUP/s/wv0G9EW5yQKXtQFAAAAAElFTkSuQmCC';
@@ -1885,27 +1789,11 @@ class DashBoard extends Component {
                         }
 
                         return (
-                          <Card key={i}
-                            onClick={() => this.showModal(user)}
+                          <div><Buttonr
+                            //onClick={() => this.showModal(user)}
                             className={styl}
-                          // cover={
-                          //     <img
-                          //         style={{ borderRadius: "10px 10px 0px 0px" }}
-                          //         alt="example"
-                          //         src={srcImg}
-                          //     />
-                          // }
-
+                            color="none" id={"flight" + i + "toggler4"}
                           >
-
-
-                            {/* <Alert style={{ background: 'white !important', width: '10%', height: '10%' }} message={
-                                        <p>
-                                            <div
-                                                className={'fontModal'}>Информация
-                                    </div>
-                                        </p>
-                                    } type="info" /> */}
                             <div style={{ float: 'left' }}>
                               <Tag className="userCardW"><font size={2} color={'#5459cd'}><b>123456</b></font></Tag>
                             </div>
@@ -1923,9 +1811,15 @@ class DashBoard extends Component {
                               <font size={2} color={'#ffffff'} className="textRight">{user.time_of_arrival}</font>
 
                             </div>
-                          </Card>
-                        );
-                      }
+                          </Buttonr>
+                          <UncontrolledCollapse toggler={"#flight" + i + "toggler4"}>
+                            <Cardr className="userCardW">
+                              <CardBody>
+
+                              </CardBody>
+                            </Cardr>
+                          </UncontrolledCollapse>
+                          </div>);
                     })}
                 </Suspense>
               </div>
