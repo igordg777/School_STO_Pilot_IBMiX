@@ -36,7 +36,7 @@ function ItemList(props) {
                             className='block'
                             ref={provided.innerRef}
                             {...provided.droppableProps}
-                        >
+                            style={{ display: 'flex', flexFlow: 'row wrap', height: 'auto' }}>
                             {wishes.map((item, index) => <Item item={item} index={index} stars={props.data.length} key={item.name + '_sprestay'} />)}
                             {provided.placeholder}
                         </div>
@@ -44,7 +44,7 @@ function ItemList(props) {
                 </Droppable>
 
             </DragDropContext>
-        </div>);
+        </div >);
 }
 
 export default ItemList;

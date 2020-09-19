@@ -599,51 +599,12 @@ li {
     width: 400px !important;
 }
 
-@media screen and (max-width: 385px) {
-    .newCard {
-        width: 355px !important;
-    }
-}
-
-@media screen and (max-width: 554px) {
-    .userCard {
-        width: 350px !important;
-    }
-}
-
-@media screen and (max-width: 1020px) {
-    .signUpForm {
-        width: 700px !important;
-    }
-}
-
-@media screen and (max-width: 720px) {
-    .signUpForm {
-        width: 500px !important;
-    }
-}
-
-@media screen and (max-width: 554px) {
-    .signUpForm {
-        width: 360px !important;
-    }
-}
 
 .modalWidth1 {
     width: 90%;
     height: 90%;
 }
-/* @media screen and (max-width: 900px){
-  .modalWidth {
-      width: 90%;
-  }
-} */
 
-/* @media screen and (min-width: 901px){
-  .modalWidth {
-      width: 55%;
-  }
-} */
 
 .inputRegistration{
     width: 95px;

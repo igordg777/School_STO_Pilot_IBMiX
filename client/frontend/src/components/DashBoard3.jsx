@@ -1,4 +1,5 @@
 import React, { Suspense, Component } from 'react';
+import MetaTags from 'react-meta-tags';
 import plane from '../images/plane.jpg';
 import Iframe from 'react-iframe'
 
@@ -533,6 +534,7 @@ class DashBoard extends Component {
       checkboxContinent: false,
       colorContinent: 'white',
       checkboxTransAirCoontinent: false,
+      areaTags: [],
 
     });
   };
@@ -756,12 +758,23 @@ class DashBoard extends Component {
 
     let selectedDates = this.state.selectedDates
 
-    let arrPreference = [checkboxTransAirCoontinent, timeDay, checkboxWorkLaziness, checkboxLongDayEasyDay, selectedDates]
+    let town1, town2, town3, town4, town5, town6, town7, town8 = false
+
+
+
+
+    let arrPreference = [checkboxTransAirCoontinent, timeDay, checkboxWorkLaziness, checkboxLongDayEasyDay, selectedDates, town1, town2, town3, town4, town5, town6, town7, town8]
+
+    if (this.state.areaTags !== 0) {
+      for (let i = 0; i < this.state.areaTags.length; i++) {
+        arrPreference[5 + i] = this.state.areaTags[i]
+      }
+    }
 
     let arrData = []
     for (let i = 0; i < arrPreference.length; i++) {
       if (arrPreference[i] === true || (typeof arrPreference[i] === 'object' && arrPreference[i].length
-        !== 0)) {
+        !== 0) || typeof arrPreference[i] === 'string') {
         if (i === 0) {
           arrData.push({ name: 'Направление\nполета', style: 'flight_direction' })
         }
@@ -778,6 +791,30 @@ class DashBoard extends Component {
         }
         if (i === 4 && flag.target.value !== 'clear') {
           arrData.push({ name: "Выбор выходных\nдней", style: 'weekends' })
+        }
+        if (i === 5) {
+          arrData.push({ name: `${arrPreference[5]}`, style: 'weekends' })
+        }
+        if (i === 6) {
+          arrData.push({ name: `${arrPreference[6]}`, style: 'weekends' })
+        }
+        if (i === 7) {
+          arrData.push({ name: `${arrPreference[7]}`, style: 'weekends' })
+        }
+        if (i === 8) {
+          arrData.push({ name: `${arrPreference[8]}`, style: 'weekends' })
+        }
+        if (i === 9) {
+          arrData.push({ name: `${arrPreference[9]}`, style: 'weekends' })
+        }
+        if (i === 10) {
+          arrData.push({ name: `${arrPreference[10]}`, style: 'weekends' })
+        }
+        if (i === 11) {
+          arrData.push({ name: `${arrPreference[11]}`, style: 'weekends' })
+        }
+        if (i === 12) {
+          arrData.push({ name: `${arrPreference[12]}`, style: 'weekends' })
         }
       }
     }
@@ -796,16 +833,24 @@ class DashBoard extends Component {
   };
 
   handleSelect = (value) => {
-    if (this.state.areaTags.length < 9) {
+    if (this.state.areaTags.length < 8) {
       let newStateArray = this.state.areaTags.slice();
       newStateArray.push(value)
       this.setState({ areaTags: newStateArray });
     }
+    this.setState({ checkboxTransAirCoontinent: true })
   };
 
   handleSelectClear = (id) => {
     this.state.areaTags.splice(id, 1);
     this.setState({ areaTags: this.state.areaTags });
+    console.log('убираем один город просто смотрим длину', this.state.areaTags, this.state.checkboxTransAirCoontinent)
+    if (this.state.areaTags.length === 0) {
+
+      this.setState({ checkboxTransAirCoontinent: false })
+      console.log('все равно заходит', this.state.areaTags, this.state.checkboxTransAirCoontinent)
+
+    }
   };
 
   filterPrise = (budget) => {
@@ -919,7 +964,13 @@ class DashBoard extends Component {
 
 
       <div>
-
+        <MetaTags>
+          <title>Pilot-req</title>
+          <meta id="meta-description" name="description" content="Some description." />
+          <meta id="meta-viewport" name="viewport" content="width=1170" />
+          <meta id="og-title" property="og:title" content="Pilot-req" />
+          <meta id="og-image" property="og:image" content="path/to/image.jpg" />
+        </MetaTags>
         <div className="dashBoardContainer">
           {(this.state.loading || !this.props.users) && (
             <div className='progress-page'>
@@ -1259,7 +1310,7 @@ class DashBoard extends Component {
                       <span className='newForm3'>Переместите бокс по приоритету</span>
                     <Popover content={rulesCount} placement="bottom"><span className='newForm4'>{points}</span></Popover>
                   </div>
-                  <div style={{ textAlign: 'left', height: '300px' }}>
+                  <div style={{ textAlign: 'left', height: 'auto' }}>
                     {/* <ItemList />
                                          */}
 
@@ -2185,11 +2236,11 @@ class DashBoard extends Component {
                       </div>*/}
                     </div>
                   </div>
-                    {user &&
-                      <div className='bid-stat-info'>
-                        <span>{this.showDiagram(user.longFly[0].flag, user.otherTime[0].flag, user.timeFly[0].flag, user.preferenceTimeFly[0].flag).text}</span>
-                      </div>
-                    }
+                  {user &&
+                    <div className='bid-stat-info'>
+                      <span>{this.showDiagram(user.longFly[0].flag, user.otherTime[0].flag, user.timeFly[0].flag, user.preferenceTimeFly[0].flag).text}</span>
+                    </div>
+                  }
                 </Card>
               )}
 
