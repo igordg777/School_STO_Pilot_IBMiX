@@ -207,66 +207,6 @@ router.post('/api/signup', async (req, res, next) => {
           "flag": false
         }
       ]
-    },
-    {
-      "month": {
-        "description": "Сентябрь",
-        "date": 9
-      },
-      "longFly": [
-        {
-          "fly": "Континентальные рейсы",
-          "flag": false
-        }
-      ],
-      "otherTime": [
-        {
-          "time": "Переработки неприемлимы",
-          "flag": true
-        }
-      ],
-      "timeFly": [
-        {
-          "flyTime": "Короткая смена",
-          "flag": false
-        }
-      ],
-      "preferenceTimeFly": [
-        {
-          "dayTime": "Вечер(17: 00 - 22: 00)",
-          "flag": false
-        }
-      ]
-    },
-    {
-      "month": {
-        "description": "Октябрь",
-        "date": 10
-      },
-      "longFly": [
-        {
-          "fly": "Континентальные рейсы",
-          "flag": false
-        }
-      ],
-      "otherTime": [
-        {
-          "time": "Хочу работать с переработками",
-          "flag": false
-        }
-      ],
-      "timeFly": [
-        {
-          "flyTime": "Короткая смена",
-          "flag": true
-        }
-      ],
-      "preferenceTimeFly": [
-        {
-          "dayTime": "Вечер(17: 00 - 22: 00)",
-          "flag": true
-        }
-      ]
     }
   ]
 
