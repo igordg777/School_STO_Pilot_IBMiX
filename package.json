@@ -6,7 +6,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "nodemon --ignore './sessions' server.js",
+    "start": "nodemon --ignore './sessions'  server.js",
     "server": "nodemon --ignore './sessions' server.js",
     "client": "npm start --prefix client/frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",

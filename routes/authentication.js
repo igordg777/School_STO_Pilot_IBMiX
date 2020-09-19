@@ -216,6 +216,7 @@ router.post('/api/signup', async (req, res, next) => {
   const rewardsAndPunishments = '3';
   const phone = '21-21-21';
   const flagVisit = false;
+  const crewRole = "КВС"
   try {
     const anketa = new Pilot({
       email, firstName, lastName, crewRole, arrFlights, standingFromDate, standingFromDateInRole, reliabilityIndex, rewardsAndPunishments, phone, flagVisit, arrWish,
