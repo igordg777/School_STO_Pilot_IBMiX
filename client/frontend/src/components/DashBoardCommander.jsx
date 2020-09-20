@@ -211,7 +211,7 @@ class DashBoardCommander extends Component {
           {/* START HEAD PANEL */}
           <div className="head-panel">
             <div className='head-part'>
-              <Button type="primary" className='bidding-btn' onClick={() => this.props.history.push('/dashboard3')}>Панель пилота</Button>
+              <Button type="primary" className='bidding-btn' onClick={() => this.props.history.push('/dashboard')}>Панель пилота</Button>
               {/*<span className="dots" />*/}
 
               <div className='bidding-info'>
