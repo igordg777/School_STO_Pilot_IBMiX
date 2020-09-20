@@ -2,11 +2,11 @@ import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import './dnd_style.css';
 
-function Item({ item, index, stars }) {
+function Item({ item, index }) {
 
   const counting_stars = () => {
     let arr = [];
-    for (let i = 0; i < (-1) * index + stars; i++)
+    for (let i = 0; i < (-1) * index + 6; i++)
       arr.push(<p className='rating_star'>&#9733;</p>);
 
     return arr;

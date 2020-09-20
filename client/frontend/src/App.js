@@ -12,7 +12,9 @@ import DashBoardCommander from "./components/DashBoardCommander"
 import Password from "./components/newPassword/Password";
 import InstructionsNewPassword from "./components/newPassword/InstructionsNewPassword";
 import SetNewPassword from "./components/newPassword/SetNewPassword";
+
 import OurCompany from './components/OurCompany';
+
 
 
 class App extends React.Component {
@@ -31,6 +33,7 @@ class App extends React.Component {
           <Route exact path={"/set_new_password/:id"} component={SetNewPassword} />
           <Route exact path={"/signupAll"} component={SignupAll} />
           <Route exact path={"/logout"} component={Logout} />
+
           <Route exact path={"/wow"} component={OurCompany} />
 
         </Switch>
