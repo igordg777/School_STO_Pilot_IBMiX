@@ -214,7 +214,7 @@ class Signup extends Component {
                     message: 'Пожалуйста, введите ID',
                   },
                 ],
-              })(<Input placeholder="E-mail" />)}
+              })(<Input placeholder="E-mail..." />)}
             </Form.Item>
 
 
