@@ -77,27 +77,25 @@ class Signup extends Component {
         const result = await response.json();
 
         if (result.response === 'success') {
-          // if (crewRole === 'пилот') {
-          //   message.success(`Новый пилот успешно зарегистрирован`, 5)
-          //   this.props.cookies.set('Role', crewRole);
-          //   this.props.cookies.set('station', 'station');
-          //   this.props.cookies.set('isLogin', true, { path: "/" });
-          //   this.setState({
-          //     isRedirect: true,
+          if (crewRole === 'пилот') {
+            message.success(`Новый пилот успешно зарегистрирован`, 5)
+            this.props.cookies.set('Role', crewRole);
+            this.props.cookies.set('station', 'station');
+            this.props.cookies.set('isLogin', true, { path: "/" });
+            this.setState({
+              isRedirect: true,
 
-          //   })
-          // } else {
-          // message.success(`Новый командир эскадрильи успешно зарегистрирован`, 5)
-          message.success(`Новый пользователь успешно зарегистрирован`, 5)
+            })
+          } else {
+            message.success(`Новый командир эскадрильи успешно зарегистрирован`, 5)
+            this.props.cookies.set('Role', crewRole);
+            this.props.cookies.set('station', 'station');
+            this.props.cookies.set('isLogin', true, { path: "/" });
+            this.setState({
+              isRedirect: true,
 
-          this.props.cookies.set('Role', crewRole);
-          this.props.cookies.set('station', 'station');
-          this.props.cookies.set('isLogin', true, { path: "/" });
-          this.setState({
-            isRedirect: true,
-
-          })
-          // }
+            })
+          }
 
 
           // window.location.href = 'http://какой то адрес/signupAll';
