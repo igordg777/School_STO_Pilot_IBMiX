@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const pilot = Schema({
@@ -15,6 +15,9 @@ const pilot = Schema({
   password: { type: String },
   keyForNewPassword: { type: String },
   wishForm: { type: Array },
+  arrWish: { type: Array },
+  arrFlights: {type: Array},
+  flagVisit: { type: Boolean },
 });
 
-module.exports = mongoose.model("Pilot", pilot);
+module.exports = mongoose.model('Pilot', pilot);

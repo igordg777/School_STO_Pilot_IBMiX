@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 const faker = require('faker');
 
-
 // // Способ 2
 
 // /*
@@ -51,7 +50,6 @@ const faker = require('faker');
 // */
 // //Способ 3
 
-
 // mongoose.connect(config.get('mongodb+srv://igorg:ibmix4@cluster0.aev79.azure.mongodb.net/IBMiX4?retryWrites=true&w=majority'), {
 //   useNewUrlParser: true,
 //   useCreateIndex: true,
@@ -77,6 +75,18 @@ const faker = require('faker');
 //   password: { type: String },
 // });
 
+
+const Airport = mongoose.model('Airport', {
+  airportId: { type: String },
+  airportName: { type: String },
+  airportName: { type: String },
+  airportNameEng: { type: String },
+  cityNameEng: { type: String },
+  countryName: { type: String },
+  countryNameEng: { type: String },
+  difficulty: { type: Number },
+});
+
 const Flights = mongoose.model('Flights', {
   where_to: { type: String },
   where_from: { type: String },
@@ -90,15 +100,15 @@ const Flights = mongoose.model('Flights', {
 
 seedFlights = async () => {
   for (let i = 0; i < 20; i++) {
-    const departureDate = faker.date.future().toISOString().substring(10, -10)
-    const daysToAdd = 2
-    const date = new Date(departureDate)
-    date.setDate(date.getDate() + daysToAdd)
-    const arrivalDate = date.toISOString().substring(10, -10)
+    const departureDate = faker.date.future().toISOString().substring(10, -10);
+    const daysToAdd = 2;
+    const date = new Date(departureDate);
+    date.setDate(date.getDate() + daysToAdd);
+    const arrivalDate = date.toISOString().substring(10, -10);
 
     const flights = new Flights({
       where_to: faker.address.city(),
-      where_from: "Moscow",
+      where_from: 'Moscow',
       flight_time: faker.random.number({ min: 1, max: 48 }),
       time_of_departure: departureDate,
       time_of_arrival: arrivalDate,
@@ -107,9 +117,9 @@ seedFlights = async () => {
       airport_name: faker.name.firstName(),
     });
     flights.save().then(() => console.log(`+ flight ${i}`));
-    console.log(i)
+    console.log(i);
   }
-}
+};
 
 // seedUsers = async () => {
 //   const saltRounds = 10;

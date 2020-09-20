@@ -22,7 +22,10 @@ router.get("/api/profilePilot", sessionChecker, async (req, res, next) => {
       rewardsAndPunishments,
       phone,
       keyForNewPassword,
-      wishForm
+      wishForm,
+      arrWish,
+      flagVisit,
+      arrFlights
     } = userMainInfo;
 
 
@@ -38,9 +41,12 @@ router.get("/api/profilePilot", sessionChecker, async (req, res, next) => {
       phone,
       keyForNewPassword,
       email,
-      wishForm
+      wishForm,
+      arrWish,
+      flagVisit,
+      arrFlights
     };
-    console.log('Да, вот он юзер', user)
+
     res.status(201).json({ response: user });
   } catch (e) {
     res.status(400).json({ response: "fail" });
@@ -48,28 +54,61 @@ router.get("/api/profilePilot", sessionChecker, async (req, res, next) => {
 });
 
 
-router.post("/api/pilot/edit", sessionChecker, async (req, res, next) => {
+
+
+
+router.post("/expierence/pilot", sessionChecker, async (req, res, next) => {
   try {
     const { email } = req.session.user;
 
-    const {
-      firstName,
-      lastName,
-      crewRole,
-    } = req.body.editUser;
-
-
+    const flagVisit = true;
 
     await Pilot.updateOne(
       { email },
       {
         $set: {
-          firstName,
-          lastName,
-          crewRole,
+          flagVisit,
         }
       }
     );
+    res.status(200).json({ response: 'success' });
+  } catch (e) {
+    res.status(400).json({ response: "fail" });
+  }
+});
+
+
+
+
+router.post("/api/pilot/edit", sessionChecker, async (req, res, next) => {
+  try {
+    const current_email = req.session.user.email;
+
+    const {
+      firstName,
+      lastName,
+      crewRole,
+      email,
+      phone
+    } = req.body.editUser;
+
+
+    await Pilot.updateOne(
+      { email: current_email },
+      {
+        $set: {
+          firstName,
+          lastName,
+          crewRole,
+          email,
+          phone
+        }
+      }
+    );
+
+    //Можно ли так делать?
+    req.session.user.email = email;
+    req.session.user.phone = phone;
 
     res.status(200).json({ response: 'success' });
   } catch (e) {
@@ -82,7 +121,7 @@ router.post("/api/pilot/edit", sessionChecker, async (req, res, next) => {
 router.post("/api/comander/edit", sessionChecker, async (req, res, next) => {
   try {
     const { email } = req.session.user;
-    console.log('Заходит')
+
     const {
       firstName,
       lastName,
