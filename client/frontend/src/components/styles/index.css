@@ -668,7 +668,7 @@ li {
 }
 
 .Calendar__monthArrow {
-    background-image: url(images/i/arrow-calendar.svg) !important;
+    background-image: url(../../images/i/arrow-calendar.svg) !important;
     transform: rotate(-90deg);
 }
 

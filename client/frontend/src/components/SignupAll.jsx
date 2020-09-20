@@ -53,7 +53,7 @@ class Signup extends Component {
           crewRole,
           password
         } = values
-        console.log(values)
+
         const userMainInfo = {
           firstName,
           lastName,
@@ -139,9 +139,9 @@ class Signup extends Component {
       // } else if (this.state.crewRole || this.state.crewRole !== 'командир') {
       //     window.location.href = 'http://localhost:3000/signup/you';
 
-      //     // return <Redirect to={'/signup/where'} />
+      //     // return <Redirect to={'/dashboard'} />
       // }
-      return <Redirect to={'/dashboard3'} />
+      return <Redirect to={'/dashboard'} />
     }
     const { getFieldDecorator } = this.props.form;
 

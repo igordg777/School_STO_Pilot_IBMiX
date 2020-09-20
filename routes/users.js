@@ -46,7 +46,7 @@ router.get("/api/profilePilot", sessionChecker, async (req, res, next) => {
       flagVisit,
       arrFlights
     };
-    console.log('Да, вот он юзер', user)
+
     res.status(201).json({ response: user });
   } catch (e) {
     res.status(400).json({ response: "fail" });
@@ -59,7 +59,6 @@ router.get("/api/profilePilot", sessionChecker, async (req, res, next) => {
 
 router.post("/expierence/pilot", sessionChecker, async (req, res, next) => {
   try {
-    console.log('пришел опыт пилота')
     const { email } = req.session.user;
 
     const flagVisit = true;
@@ -72,8 +71,6 @@ router.post("/expierence/pilot", sessionChecker, async (req, res, next) => {
         }
       }
     );
-    console.log('проходит без ошибки')
-
     res.status(200).json({ response: 'success' });
   } catch (e) {
     res.status(400).json({ response: "fail" });
@@ -108,7 +105,7 @@ router.post("/api/pilot/edit", sessionChecker, async (req, res, next) => {
         }
       }
     );
-    
+
     //Можно ли так делать?
     req.session.user.email = email;
     req.session.user.phone = phone;
@@ -124,7 +121,7 @@ router.post("/api/pilot/edit", sessionChecker, async (req, res, next) => {
 router.post("/api/comander/edit", sessionChecker, async (req, res, next) => {
   try {
     const { email } = req.session.user;
-    console.log('Заходит')
+
     const {
       firstName,
       lastName,

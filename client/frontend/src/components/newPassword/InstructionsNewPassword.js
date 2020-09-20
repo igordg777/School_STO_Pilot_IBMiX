@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
-import {Form, Icon, Input, Button, notification, Card} from 'antd';
+import React, { Component } from 'react';
+import { Form, Icon, Input, Button, notification, Card } from 'antd';
 import logo from '../../images/logo.png';
 
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const openNotification = (placement, icon, title, message) => {
   notification.open({
     message: title,
     description:
-    message,
+      message,
     placement,
-    icon: <Icon type={icon} style={{color: '#108ee9'}}/>,
+    icon: <Icon type={icon} style={{ color: '#108ee9' }} />,
     duration: 3,
     isRedirect: false,
   });
@@ -30,19 +30,19 @@ class Password extends Component {
     event.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log(values);
+
         // this.setState({ iconLoading: true })
-        console.log('Заходит2');
+
         const response = await fetch('/newPassword', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: values.email,
           }),
         });
-        console.log('Заходит3');
+
         const result = await response.json();
-        console.log(result);
+
 
         if (result.response === 'success') {
 
@@ -51,8 +51,8 @@ class Password extends Component {
           });
         } else {
           openNotification('topRight', 'warning', 'Warning',
-              'Неверный email и пароль, пожалуйста попробуйте еще раз!');
-          this.setState({iconLoading: false});
+            'Неверный email и пароль, пожалуйста попробуйте еще раз!');
+          this.setState({ iconLoading: false });
         }
       }
     });
@@ -60,28 +60,28 @@ class Password extends Component {
 
   render() {
     if (this.state.isRedirect) {
-      return <Redirect to={`/instructions_new_password`}/>;
+      return <Redirect to={`/instructions_new_password`} />;
     }
-    const {getFieldDecorator} = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     return (
-        <div className="registerForm">
+      <div className="registerForm">
 
-          <Card style={{
-            borderRadius: '20px',
-            marginTop: '11%',
-            marginBottom: '11%',
-          }}>
-            <div style={{textAlign: 'center'}}>
-              <img style={{width: '130px'}} src={logo} alt=""/>
-              <h3 style={{color: '#4a76a8'}}>
-                <img
-                    src="https://img.icons8.com/fluent/48/000000/ok.png"/> Инструкции
+        <Card style={{
+          borderRadius: '20px',
+          marginTop: '11%',
+          marginBottom: '11%',
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <img style={{ width: '130px' }} src={logo} alt="" />
+            <h3 style={{ color: '#4a76a8' }}>
+              <img
+                src="https://img.icons8.com/fluent/48/000000/ok.png" /> Инструкции
                 высланы, проверьте Ваш почтовый ящик!</h3>
 
-            </div>
+          </div>
 
-          </Card>
-        </div>
+        </Card>
+      </div>
     );
   }
 }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Avatar, Tabs, Icon, Button, Card, Form, DatePicker } from "antd";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import pilotAvatar from "../images/pilotAvatarHalf.jpg";
-import './Profile.css';
+import './styles/Profile.css';
 
 // const fetch = require('node-fetch');
 
@@ -28,14 +28,14 @@ class Profile extends Component {
       user: null,
     };
   }
-  
+
   componentDidMount() {
     (async () => {
       const response = await fetch('/api/profilePilot', {
         headers: { 'Content-Type': 'application/json' }
       })
       const result = await response.json();
-      this.setState({user: result.response});
+      this.setState({ user: result.response });
     })();
   }
 
@@ -44,10 +44,10 @@ class Profile extends Component {
       fetch('/api/pilot/edit', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({editUser: user}),
+        body: JSON.stringify({ editUser: user }),
       }).then((res) => res.json()).then((res) => console.log("IN FETCH", res));
     })();
-    this.setState({edit: !this.state.edit});
+    this.setState({ edit: !this.state.edit });
   }
 
   render() {
@@ -65,139 +65,139 @@ class Profile extends Component {
       linkEdite = "/login"
     }
 
-    console.log('123', this.state.phone)
+
     return (
-          <Modal isOpen={this.props.isOpen} className={'modal-lg'}> 
+      <Modal isOpen={this.props.isOpen} className={'modal-lg'}>
 
-            <ModalBody className={'main_block'}>
+        <ModalBody className={'main_block'}>
 
-            <div style={{textAlign: 'right'}}>
-              <div className={"setting"}>
-                <Icon type='setting' style={{color: 'white'}} className={'unselectable'} onClick={() => this.setState({edit: !this.state.edit})} />
+          <div style={{ textAlign: 'right' }}>
+            <div className={"setting"}>
+              <Icon type='setting' style={{ color: 'white' }} className={'unselectable'} onClick={() => this.setState({ edit: !this.state.edit })} />
+            </div>
+            <div className={"setting"}>
+              <Icon type='close' style={{ color: 'white' }} className={'unselectable'} onClick={() => this.props.closeFunc()} />
+            </div>
+          </div>
+
+          <div className="block_with_avatar">
+            <div className="left_column_with_avatar">
+              <Avatar
+                size={150}
+                icon="user"
+                src={this.state.photo && this.state.user.photo ? this.state.user.photo : pilotAvatar}
+              />
+            </div>
+            <div className="right_column_with_avatar">
+              <h3
+                style={{ color: "#ffffff" }}
+              >{`${this.state.user ? this.state.user.firstName : "Name"} ${this.state.user ? this.state.user.lastName : 'Surname'}`}</h3>
+
+              <div className={'contact_info'} style={{ marginBottom: '0px' }}>
+                <h5 style={{ color: "#ffffff" }}>
+                  <span style={{ fontWeight: "bold" }}>
+                    <Icon type="user" /> &nbsp; Должность: <span style={{ fontWeight: "normal" }}> {this.state.user && this.state.user.crewRole ? this.state.user.crewRole : '-/-'} </span>
+                  </span>
+                </h5>
               </div>
-              <div className={"setting"}>
-                <Icon type='close' style={{color: 'white'}} className={'unselectable'} onClick={() => this.props.closeFunc()} />
+
+              <div className={'contact_info' + (this.state.edit ? ' change_this_field' : '')}>
+                <h5 style={{ color: this.state.edit ? "rgb(83,93,202)" : "#ffffff" }}>
+                  <span style={{ fontWeight: "bold", marginLeft: '10px' }}>
+                    <Icon type="mail" /> &nbsp; E-mail:
+                            <input
+                      value={this.state.user && this.state.user.email ? this.state.user.email : (!this.state.edit ? '-/-' : '')}
+                      className={'input_field'}
+                      onChange={(val) => {
+                        let tmp = this.state.user;
+                        tmp.email = val.target.value;
+                        this.setState({ user: tmp })
+                      }}
+                      disabled={!this.state.edit}
+                    />
+                  </span>
+                </h5>
+              </div>
+
+              <div className={'contact_info' + (this.state.edit ? ' change_this_field' : '')}>
+                <h5 style={{ color: this.state.edit ? "rgb(83,93,202)" : "#ffffff", marginLeft: '11px' }}>
+                  <span style={{ fontWeight: "bold", marginLeft: '10px' }}>
+                    <Icon type="phone" /> &nbsp; Телефон:
+                            <input
+                      value={this.state.user && this.state.user.phone ? this.state.user.phone : (!this.state.edit ? '-/-' : '')}
+                      className={'input_field'}
+                      onChange={(val) => {
+                        let tmp = this.state.user;
+                        tmp.phone = val.target.value;
+                        this.setState({ user: tmp })
+                      }}
+                      disabled={!this.state.edit}
+                    />
+                  </span>
+                </h5>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div className='block_with_avatar'>
+            <div>
+              <div>
+                <h5 style={{ color: "#ffffff" }}>
+                  <span style={{ fontWeight: "bold" }}>
+                    <Icon type="calendar" /> &nbsp; Стаж работы в должности:
+                          </span>
+                  <li type='disc'>
+                    <span className={'subtext'}>с {this.state.user && this.state.user.standingFromDateInRole ? this.state.user.standingFromDateInRole : '-/-'} </span>
+                  </li>
+                </h5>
+              </div>
+
+              <div>
+                <h5 style={{ color: "#ffffff" }}>
+                  <span style={{ fontWeight: "bold" }}>
+                    <Icon type="calendar" /> &nbsp; Стаж работы в авиакомпании:
+                          </span>
+                  <li>
+                    <span className={'subtext'}> с {this.state.user && this.state.user.standingFromDate ? this.state.user.standingFromDate : '-/-'}</span>
+                  </li>
+                </h5>
               </div>
             </div>
 
-              <div className="block_with_avatar">
-                <div className="left_column_with_avatar">
-                    <Avatar
-                        size={150}
-                        icon="user"
-                        src={this.state.photo && this.state.user.photo ? this.state.user.photo : pilotAvatar}
-                    />
-                </div>
-                <div className="right_column_with_avatar">
-                      <h3
-                          style={{ color: "#ffffff" }}
-                      >{`${this.state.user ? this.state.user.firstName : "Name"} ${this.state.user ? this.state.user.lastName : 'Surname'}`}</h3>
- 
-                      <div className={'contact_info'} style={{marginBottom: '0px'}}>
-                        <h5 style={{ color: "#ffffff" }}>
-                      <span style={{ fontWeight: "bold" }}>
-                        <Icon type="user" /> &nbsp; Должность: <span style={{ fontWeight: "normal" }}> {this.state.user && this.state.user.crewRole ? this.state.user.crewRole : '-/-'} </span>
-                      </span>
-                        </h5>
-                      </div>
-
-                      <div className={'contact_info' + (this.state.edit ? ' change_this_field' : '')}>
-                        <h5 style={{ color: this.state.edit ? "rgb(83,93,202)" : "#ffffff" }}>
-                          <span style={{ fontWeight: "bold", marginLeft: '10px'}}>
-                            <Icon type="mail" /> &nbsp; E-mail:
-                            <input 
-                            value = {this.state.user && this.state.user.email ? this.state.user.email : (!this.state.edit ? '-/-' : '')}
-                            className={'input_field'}
-                            onChange={(val) => {
-                              let tmp = this.state.user;
-                              tmp.email = val.target.value;
-                              this.setState({user: tmp})
-                            }}
-                            disabled={!this.state.edit}
-                            />
+            <div>
+              <div>
+                <h5 style={{ color: "#ffffff" }}>
+                  <span style={{ fontWeight: "bold" }}>
+                    <Icon type="global" /> &nbsp; Индекс сеньорити:
                           </span>
-                        </h5>
-                      </div>
-
-                      <div  className={'contact_info' + (this.state.edit ? ' change_this_field' : '')}>
-                        <h5 style={{ color: this.state.edit ? "rgb(83,93,202)" : "#ffffff", marginLeft: '11px' }}>
-                          <span style={{ fontWeight: "bold", marginLeft: '10px' }}>
-                            <Icon type="phone" /> &nbsp; Телефон: 
-                            <input 
-                            value = {this.state.user && this.state.user.phone ? this.state.user.phone : (!this.state.edit ? '-/-' : '')}
-                            className={'input_field'}
-                            onChange={(val) => {
-                              let tmp = this.state.user;
-                              tmp.phone = val.target.value;
-                              this.setState({user: tmp})
-                            }}
-                            disabled={!this.state.edit}
-                            />
-                          </span>
-                        </h5>
-                      </div>
-                </div>
+                  <li>
+                    <span className={'subtext'}> {this.state.user && this.state.user.reliabilityIndex ? this.state.user.reliabilityIndex : '-/-'} </span>
+                  </li>
+                </h5>
               </div>
 
-    
-
-              <div className='block_with_avatar'>
-                    <div>
-                      <div>
-                        <h5 style={{ color: "#ffffff" }}>
-                          <span style={{ fontWeight: "bold" }}>
-                            <Icon type="calendar" /> &nbsp; Стаж работы в должности: 
+              <div>
+                <h5 style={{ color: "#ffffff" }}>
+                  <span style={{ fontWeight: "bold" }}>
+                    <Icon type="bell" /> &nbsp; Индекс поощрений и наказаний:
                           </span>
-                          <li type='disc'>
-                            <span className={'subtext'}>с {this.state.user && this.state.user.standingFromDateInRole ? this.state.user.standingFromDateInRole : '-/-'} </span>
-                          </li>
-                        </h5>
-                      </div>
-
-                      <div>
-                        <h5 style={{ color: "#ffffff" }}>
-                          <span style={{ fontWeight: "bold" }}>
-                            <Icon type="calendar" /> &nbsp; Стаж работы в авиакомпании:
-                          </span>
-                          <li>
-                            <span className={'subtext'}> с {this.state.user && this.state.user.standingFromDate ? this.state.user.standingFromDate : '-/-'}</span>
-                          </li>
-                        </h5>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div>
-                        <h5 style={{ color: "#ffffff" }}>
-                          <span style={{ fontWeight: "bold" }}>
-                            <Icon type="global" /> &nbsp; Индекс сеньорити: 
-                          </span>
-                          <li>
-                            <span className={'subtext'}> {this.state.user && this.state.user.reliabilityIndex ? this.state.user.reliabilityIndex : '-/-'} </span>
-                          </li>
-                        </h5>
-                      </div>
-
-                      <div>
-                        <h5 style={{ color: "#ffffff" }}>
-                          <span style={{ fontWeight: "bold" }}>
-                            <Icon type="bell" /> &nbsp; Индекс поощрений и наказаний:
-                          </span>
-                          <li>
-                            <span className={'subtext'}> {this.state.user && this.state.user.rewardsAndPunishments ? this.state.user.rewardsAndPunishments : '-/-'}</span>
-                          </li>
-                        </h5>
-                      </div>
-                    </div>
+                  <li>
+                    <span className={'subtext'}> {this.state.user && this.state.user.rewardsAndPunishments ? this.state.user.rewardsAndPunishments : '-/-'}</span>
+                  </li>
+                </h5>
               </div>
+            </div>
+          </div>
 
-              <div style={{ display: 'flex', justifyContent: 'center', height: '70px'}}>
-                <div style={!this.state.edit ? {display: 'none'} : {display: 'block'}}>
-                  <Button onClick={() => this.saveToBase(this.state.user)}>Сохранить</Button>
-                </div>
-              </div>
-            </ModalBody>
-        </Modal>
+          <div style={{ display: 'flex', justifyContent: 'center', height: '70px' }}>
+            <div style={!this.state.edit ? { display: 'none' } : { display: 'block' }}>
+              <Button onClick={() => this.saveToBase(this.state.user)}>Сохранить</Button>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
     );
   }
 }

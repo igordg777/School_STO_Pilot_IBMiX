@@ -8,8 +8,6 @@ router.post('/api/getAllFly', async (req, res) => {
 
   try {
     const flights = await Flights.find();
-    // здесь будет обращение к базе
-    // console.log('Пустой массив', flights);
     return res.status(200).json({ response: flights });
   } catch (e) {
     res.status(400).json({ response: 'fail' });
@@ -17,10 +15,10 @@ router.post('/api/getAllFly', async (req, res) => {
 });
 
 router.post('/api/getAirports/russia', async (req, res) => {
-  console.log('есть запрос', req.body.reliabilityIndex)
+
   try {
     const airports = await Airports.find({ 'countryName': "Российская Федерация" });
-    console.log(airports.length)
+
     return res.status(200).json({ response: airports });
   } catch (e) {
     res.status(400).json({ response: 'fail' });
@@ -28,7 +26,7 @@ router.post('/api/getAirports/russia', async (req, res) => {
 });
 
 router.post('/api/getAirports/world', async (req, res) => {
-  console.log('есть запрос', req.body.reliabilityIndex)
+
   try {
     const airports = await Airports.find();
     let worldAirports = [];
@@ -39,7 +37,7 @@ router.post('/api/getAirports/world', async (req, res) => {
         worldAirports.push(airports[i])
       }
     }
-    console.log(worldAirports.length)
+
     return res.status(200).json({ response: worldAirports });
   } catch (e) {
     res.status(400).json({ response: 'fail' });
@@ -49,7 +47,7 @@ router.post('/api/getAirports/world', async (req, res) => {
 router.post('/api/getCities', async (req, res) => {
   try {
     let cities;
-    const getCities = await Airports.find({}, function(err, docs){
+    const getCities = await Airports.find({}, function (err, docs) {
       const doc = docs.map(el => {
         return el.cityName;
       })

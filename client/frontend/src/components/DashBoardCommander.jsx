@@ -14,8 +14,7 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import { AddPhotoAC, AddUserAC, AddUsersDashBoard, SetPriority, SetFlightDirection, SetDayTime } from '../redux/action';
-import './DashBoard.css';
-import StepButtonComponent from './StepButtonComponent/StepButtonComponent';
+import './styles/DashBoard.css';
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -117,7 +116,7 @@ class DashBoardCommander extends Component {
       headers: { 'Content-Type': 'application/json' },
     });
     const result = await response.json();
-    console.log(result);
+
     if (result.response !== 'fail') {
 
       await this.props.addUser(result.response);
@@ -125,7 +124,6 @@ class DashBoardCommander extends Component {
 
     }
 
-    console.log('есть', this.props.user);
 
     const reqComparison = await fetch('/api/getAllFly', {
 
@@ -143,7 +141,7 @@ class DashBoardCommander extends Component {
     this.setState({ loading: false });
 
     this.props.AddUsersDashBoard(users);
-    console.log('есть ', users, this.props.users, this.props.users.response);
+
 
 
   }
@@ -188,7 +186,7 @@ class DashBoardCommander extends Component {
   };
 
   onChangeIframe = e => {
-    console.log('radio checked', e.target.value);
+
     this.setState({
       valueIframe: e.target.value,
     });

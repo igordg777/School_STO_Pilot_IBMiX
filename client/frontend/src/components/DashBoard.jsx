@@ -8,8 +8,8 @@ import github from '../images/github.png';
 import inst from '../images/inst.png';
 import npm from '../images/npm.png';
 import moment from 'moment';
-import ItemList from '../components/DnD/itemList';
-import ItemList_day from '../components/DnD_day/itemList';
+import ItemList from './DnD/itemList';
+import ItemList_day from './DnD_day/itemList';
 import { UncontrolledCollapse, Button as Buttonr, CardBody, Card as Cardr, Collapse as Collapser } from 'reactstrap';
 import Calendar from './Calendar'
 import CalendarWithButtons from './CalendarWithButtons';
@@ -18,12 +18,12 @@ import RadioButtonList_WorkDay from './WorkTime/RadioButtonList';
 import { data_work_time } from './WorkTime/radio_data';
 import { data_work_day } from './WorkDay/radio_data';
 import RadioButtonList_WorkTime from './WorkDay/RadioButtonList';
-
+import Step1 from './StepsWishForm/Step1'
 import WOW from 'wowjs';
 
 import Profile from './Profile';
 
-import { Popover, Tabs } from 'antd';
+import { } from 'antd';
 import {
   Card,
   Modal,
@@ -34,22 +34,25 @@ import {
   Spin,
   Switch,
   Button,
-  Carousel, Slider, Select, Badge, Form, Collapse,
+  Carousel,
+  Slider,
+  Select,
+  Badge,
+  Form,
+  Collapse,
   Tag,
+  Popover,
+  Tabs,
   Alert,
   Checkbox,
 } from 'antd';
 import { connect } from 'react-redux';
 import { AddPhotoAC, AddUserAC, AddUsersDashBoard, SetPriority, SetFlightDirection, SetDayTime } from '../redux/action';
-import './DashBoard.css';
+import './styles/DashBoard.css';
 
 function handleChange(value) {
   console.log(`selected ${value}`);
 }
-
-
-
-
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -64,20 +67,17 @@ const openNotification = (placement, icon, title, message) => {
   });
 };
 
-// КНОПОЧКИ НА НАВИГАЦИОННОЙ ПАНЕЛИ
+// Профиль/выйти
 const content = (func) => {
   return (
     <div>
-      {/* <p><a href="/profile">Профиль</a></p> */}
-      {/* <p onClick={() => this.setState({modalProfileShow: !this.state.modalProfileShow})}>{this.state.modalProfileShow.toSring()}</p> */}
-      {/* <p onClick={() => this.setState({modalProfileShow: !this.state.modalProfileShow})}>Профиль</p> */}
       <p onClick={() => func()}><a href='#'>Профиль</a></p>
       <p><a href="/logout">Выйти</a></p>
     </div>
   );
 }
 
-
+//Счетчик вероятности учета пожеланий
 const rulesCount = (
   <div>
     <p><b><u>Коэффициент вероятности учета пожеланий</u></b> <br /> При увелечении количества преференций <br /> уменьшается  вероятность учета пожелания </p>
@@ -90,21 +90,15 @@ class DashBoard extends Component {
     super(props);
     this.state = {
       areaTags: [],
-
-      modalUser: null,
       modalProfileShow: false,
       loading: false,
       visibleSort: false,
-      showLongWork: true,
-      showShortWork: true,
       minTime: 0,
       maxTime: 24,
       minDifficulty: 0,
       maxDifficulty: 10,
       cities: null,
       visible: false,
-      visible2: false,
-      visible4: false,
       flagVisit: false,
       usersLength: null,
       newWish: false,
@@ -138,23 +132,6 @@ class DashBoard extends Component {
       showSortFilters: false,
     };
   }
-
-  showModal = user => {
-
-    this.setState({
-      modalUser: {
-        where_to: user.where_to,
-        where_from: user.where_from,
-        flight_time: user.flight_time,
-        time_of_departure: user.time_of_departure,
-        time_of_arrival: user.time_of_arrival,
-        level_flights: user.level_flights,
-        city_photo: user.city_photo,
-        airport_name: user.airport_name,
-      },
-      visible: true,
-    });
-  };
 
   showSort = () => {
 
@@ -202,7 +179,7 @@ class DashBoard extends Component {
 
       if (result.response.flagVisit === false)
         this.setState({
-          visible4: true,
+          visible: true,
         });
 
     }
@@ -219,13 +196,9 @@ class DashBoard extends Component {
       }),
     });
     let users = await reqComparison.json();
-
-
     this.setState({ loading: false });
-
     this.props.AddUsersDashBoard(users);
     this.setState({ workingDays: this.getWorkingDays() });
-
     this.setState({
       newWishForm: this.props.user.wishForm,
     });
@@ -234,21 +207,8 @@ class DashBoard extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    // this.props.form.validateFields(async (err, values) => {
-    // if (!err) {
-
-
 
     let longFly;
-    // if (this.state.checkboxTransAir) {
-    //   longFly = 'Трансатлантические'
-    // } else if (this.state.checkboxContinent) {
-    //   longFly = 'Континентальные'
-    // } else if (!this.state.checkboxTransAir && !this.state.checkboxContinent) {
-    //   longFly = 'Не заполнено'
-    // }
-
-
 
     if (this.state.areaTags.length !== 0) {
       longFly = this.state.areaTags
@@ -288,7 +248,6 @@ class DashBoard extends Component {
       allPreference = ['Не заполнено']
     }
 
-
     let selectedDates = this.state.selectedDates
     if (selectedDates.length !== 0) {
       selectedDates = this.state.selectedDates
@@ -315,32 +274,6 @@ class DashBoard extends Component {
       })
       this.props.user.wishForm = result.wishForm
     }
-
-    //     this.props.cookies.set('isLogin', true, { path: "/" });
-    //     this.props.cookies.set('Role', result.crewRole, { path: "/" });
-    //     this.props.addIsLogin(true);
-    //     if (result.crewRole === 'командир отдельно на будещее') {
-
-    //         this.setState({
-    //             isRedirect: true,
-    //             iconLoading: false,
-    //             dashboard: "/dashboard3"
-    //         })
-
-    //     } else if (result.crewRole || result.crewRole !== 'командир отдельно на будещее') {
-    //         this.setState({
-    //             isRedirect: true,
-    //             iconLoading: false,
-    //             dashboard: "/dashboard3"
-    //         })
-    //     }
-
-    // } else {
-    //     openNotification('topRight', 'warning', 'Warning', 'Неверный email и пароль, пожалуйста попробуйте еще раз!')
-    //     this.setState({ iconLoading: false })
-    // }
-    // }
-    // })
   };
 
   showDiagram = (flag1, flag2, flag3, flag4) => {
@@ -367,14 +300,6 @@ class DashBoard extends Component {
   };
 
 
-  onChangeLongWork = (checked) => {
-    this.setState({ showLongWork: checked });
-  };
-
-  onChangeShortWork = (checked) => {
-    this.setState({ showShortWork: checked });
-  };
-
   onChangeTime = value => {
     this.setState({
       minTime: value[0],
@@ -393,35 +318,10 @@ class DashBoard extends Component {
     return this.state.minTime <= time && time <= this.state.maxTime;
   };
 
-  tryam = () => {
-    this.setState({
-      visible2: true,
-    });
 
-  };
-  handleCancel = e => {
+  handleCancel = async (e) => {
     this.setState({
       visible: false,
-    });
-  };
-
-  handleCancel2 = e => {
-    this.setState({
-      visible2: false,
-    });
-  };
-
-
-  handleCancel3 = () => {
-
-    this.setState({
-      visibleSort: false,
-    });
-  };
-
-  handleCancel4 = async (e) => {
-    this.setState({
-      visible4: false,
     });
 
     const response = await fetch('/expierence/pilot', {
@@ -521,7 +421,6 @@ class DashBoard extends Component {
   };
 
   step3Clear = () => {
-
     this.setState({
       preference: false,
       preference1: false,
@@ -540,7 +439,6 @@ class DashBoard extends Component {
   };
 
   step4 = () => {
-
     this.setState({
       preference: false,
       preference1: false,
@@ -552,7 +450,6 @@ class DashBoard extends Component {
   };
 
   step4Clear = () => {
-
     this.setState({
       preference: false,
       preference1: false,
@@ -566,7 +463,6 @@ class DashBoard extends Component {
 
 
   step5 = () => {
-
     this.setState({
       preference: false,
       preference1: false,
@@ -578,7 +474,6 @@ class DashBoard extends Component {
   };
 
   step5Clear = () => {
-
     this.setState({
       preference: false,
       preference1: false,
@@ -595,7 +490,6 @@ class DashBoard extends Component {
   };
 
   step6 = () => {
-
     this.setState({
       preference: false,
       preference1: false,
@@ -604,12 +498,10 @@ class DashBoard extends Component {
       preference4: false,
       preference5: true,
       preference6: false,
-
     });
   };
 
   step6Clear = () => {
-
     this.setState({
       preference: false,
       preference1: false,
@@ -622,20 +514,18 @@ class DashBoard extends Component {
       checkboxEasyDay: false,
       colorEasyDay: 'white',
       checkboxLongDayEasyDay: false,
-
     });
   };
 
   mainPreference = (e) => {
 
+    console.log(e) // Итоговый шаг со всеми преференцими, резельтат выбора пилота по всем пунктам
   };
 
   timeDayPreference = (e) => {
-
     this.setState({
       timeDay: e
     });
-
   };
 
   checkboxTransAir = async (e) => {
@@ -645,7 +535,6 @@ class DashBoard extends Component {
       colorTransAir: 'rgb(180,244,209)',
       colorContinent: 'white',
       checkboxTransAirCoontinent: true
-
     });
 
     const reqComparison = await fetch('/api/getAirports', {
@@ -668,18 +557,15 @@ class DashBoard extends Component {
   };
 
   checkboxContinent = async (e) => {
-
     this.setState({
       checkboxTransAir: false,
       checkboxContinent: true,
       colorContinent: 'rgb(180,244,209)',
       colorTransAir: 'white',
       checkboxTransAirCoontinent: true
-
     });
 
     const reqComparison = await fetch('/api/getAirports/russia', {
-
       headers: {
         'Content-Type': 'application/json',
       },
@@ -692,11 +578,7 @@ class DashBoard extends Component {
     this.setState({
       cities: cities.response
     });
-
-
   };
-
-
 
   checkboxWork = (e) => {
     this.setState({
@@ -759,9 +641,6 @@ class DashBoard extends Component {
     let selectedDates = this.state.selectedDates
 
     let town1, town2, town3, town4, town5, town6, town7, town8 = false
-
-
-
 
     let arrPreference = [checkboxTransAirCoontinent, timeDay, checkboxWorkLaziness, checkboxLongDayEasyDay, selectedDates, town1, town2, town3, town4, town5, town6, town7, town8]
 
@@ -844,17 +723,13 @@ class DashBoard extends Component {
   handleSelectClear = (id) => {
     this.state.areaTags.splice(id, 1);
     this.setState({ areaTags: this.state.areaTags });
-    console.log('убираем один город просто смотрим длину', this.state.areaTags, this.state.checkboxTransAirCoontinent)
+
     if (this.state.areaTags.length === 0) {
 
       this.setState({ checkboxTransAirCoontinent: false })
-      console.log('все равно заходит', this.state.areaTags, this.state.checkboxTransAirCoontinent)
+
 
     }
-  };
-
-  filterPrise = (budget) => {
-    return this.state.minTime <= budget && budget <= this.state.maxTime;
   };
 
   filterCities = (city) => {
@@ -875,13 +750,11 @@ class DashBoard extends Component {
     return this.state.minDifficulty <= level_flights && level_flights <= this.state.maxDifficulty;
   };
 
-
   handleChangeSort = (value) => {
     if (value.length === 0) {
       this.setState({ citiesSort: value })
     }
     this.setState({ citiesSort: value })
-
   };
 
   render() {
@@ -930,7 +803,6 @@ class DashBoard extends Component {
     }
 
     let thirdPreference;
-
     if (this.state.checkboxWork || this.state.checkboxLaziness) {
       thirdPreference = 15
     } else {
@@ -961,8 +833,6 @@ class DashBoard extends Component {
     let lastDay = moment(last).format('MM / DD / YYYY');
 
     return (
-
-
       <div>
         <MetaTags>
           <title>Pilot-req</title>
@@ -977,12 +847,11 @@ class DashBoard extends Component {
               <Spin size="small" tip="Загрузка..." />
             </div>
           )}
-          {/* START HEAD PANEL */}
+
           <div className="head-panel">
             <div className='head-part'>
               <Button type="primary" className='bidding-btn' onClick={this.onNewWishList}>Новая заявка</Button>
-              {/* {(this.props.user.crewRole === 'командир') && <Button type="primary" className='bidding-btn' onClick={() => this.props.history.push('/dashboardC')}>Аналитика</Button>} */}
-              {/*<span className="dots" />*/}
+
 
               <div className='bidding-info'>
                 <span className='bidding-info--start'>Старт подачи</span>
@@ -1129,7 +998,7 @@ class DashBoard extends Component {
               <Profile isOpen={this.state.modalProfileShow} closeFunc={() => this.setState({ modalProfileShow: !this.state.modalProfileShow })} />
               {/* Модальное окно профиля конец */}
 
-              {/* <Popover content={content} placement="bottom"> */}
+
               <Avatar
                 className="user-avatar"
                 size="large"
@@ -1137,8 +1006,7 @@ class DashBoard extends Component {
                 icon="user"
                 src="https://img.icons8.com/bubbles/50/000000/short-curly-hair-lady-with-red-glasses.png"
               />
-              {/* </Popover> */}
-              {/* <Popover content={content} placement="bottom"> */}
+
               <div className='user-info'>
                 <span className='user-info--name'>{this.props.user &&
                   this.props.user.firstName}</span>
@@ -1161,128 +1029,13 @@ class DashBoard extends Component {
           </div>
           {/* END HEAD PANEL */}
 
-
-          <div className='modalWidth'>
-            <Modal
-              width='700px'
-              title="Фильтрация расписания рейсов"
-              visible={this.state.visibleSort}
-              onCancel={this.handleCancel3}
-              footer={[]}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <div className="dashBoardContainerMoreFiltres">
-                  <div className="dashBoardContentMoreFiltres">
-                    <Card size="small" title="Время полета" className="userCardFilterSort">
-                      <div style={{ marginLeft: 'auto', marginRight: 'auto', width: 'auto' }}>
-                        <Slider range value={[this.state.minTime, this.state.maxTime]} max={24}
-                          onChange={this.onChangeTime}
-                          defaultValue={[this.state.minTime, this.state.maxTime]}
-                          marks={{ 0: 'ч', 24: 'ч.' }} />
-                      </div>
-                    </Card>
-                    <Card size="small" title="Город"
-                      className="userCardFilterSort"
-                    >
-                      <Select
-                        mode="multiple"
-                        style={{ width: '50%' }}
-                        placeholder="Приоритетный город"
-                        // defaultValue={['china']}
-                        onChange={handleChange}
-                      // optionLabelProp="label"
-                      >
-
-                        {this.state.cities && this.state.cities.map(city => (
-                          <Option value={city.cityName} key={city.cityName}>
-                            <div className="demo-option-label-item">
-                              {city.cityName}
-                            </div>
-                          </Option>
-                        ))}
-
-                      </Select>
-
-                    </Card>
-                    <Card size="small" title="Время полета" className="userCardFilterSort">
-                      <div style={{ marginLeft: 'auto', marginRight: 'auto', width: 'auto' }}>
-                        <Slider range value={[this.state.minPrice, this.state.maxPrice]} max={24}
-                          onChange={this.onChangeTime}
-                          defaultValue={[this.state.minTime, this.state.maxTime]}
-                          marks={{ 0: 'ч', 24: 'ч.' }} />
-                      </div>
-                    </Card>
-
-
-                  </div>
-                </div>
-              </div>
-            </Modal>
-          </div>
-
         </div>
 
         {
           (this.state.newWish && this.state.preference)
           && (
-            <div className="dashBoardContainer">
-              <div className="dashBoardContentDrag borderDesign">
-                <Card
-                  size="small"
-                  bordered={false}
-                  className="userCardSlider"
-                >
-                  <div className='newForm'>Новая Заявка &nbsp;
-                      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M14 5.00004L9.63529 9.73219C9.30588 10.0893 8.79118 10.0893 8.46176 9.73219C8.13235 9.37504 8.13235 8.81701 8.46176 8.45987L11.6735 5.00004L8.46176 1.5179C8.13235 1.16076 8.13235 0.602722 8.46176 0.245579C8.79118 -0.111564 9.30588 -0.111564 9.63529 0.245579L14 5.00004Z"
-                        fill="#282828"
-                      />
-                      <path
-                        d="M-0.000100175 5.00003C-0.000100153 4.50896 0.370488 4.10718 0.82343 4.10718L12.7646 4.10718C13.2175 4.10718 13.5881 4.50896 13.5881 5.00003C13.5881 5.49111 13.2175 5.89289 12.7646 5.89289L0.82343 5.89289C0.370488 5.89289 -0.000100196 5.49111 -0.000100175 5.00003Z"
-                        fill="#282828"
-                      />
-                    </svg>
-                    <span className='newForm2'>
-                      &nbsp;&nbsp;&nbsp; 1. Приоритет заявки</span> &nbsp;&nbsp;&nbsp;
-                      <span className='newForm3'>Переместите бокс по приоритету</span>
-                  </div>
-                  <div style={{ textAlign: 'left', height: '300px' }}>
-                    {/* <ItemList />
-                                         */}
-                  Здесь можно указать основную информацию о правилах заведения новой заявки для новых пользователей
-                  </div>
-                  <Button
-                    type="primary"
-                    className='bidding-btn-step--skip'
-                    onClick={this.step}
-                  >
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.9996 3.99972L8.25842 0.214007C7.97607 -0.0717068 7.53489 -0.0717068 7.25254 0.214007C6.97018 0.499722 6.97018 0.946149 7.25254 1.23186L10.0055 4.01758L7.25254 6.78544C6.97018 7.07115 6.97018 7.51758 7.25254 7.80329C7.53489 8.08901 7.97607 8.08901 8.25842 7.80329L11.9996 3.99972Z" fill="black" />
-                      <path d="M3.68824 3.28578H0.705882C0.317647 3.28578 0 3.60721 0 4.00007C0 4.39293 0.317647 4.71436 0.705882 4.71436H3.68824C4.07647 4.71436 4.39412 4.39293 4.39412 4.00007C4.39412 3.60721 4.07647 3.28578 3.68824 3.28578Z" fill="black" />
-                      <path d="M10.9419 3.28578H6.65364C6.2654 3.28578 5.94775 3.60721 5.94775 4.00007C5.94775 4.39293 6.2654 4.71436 6.65364 4.71436H10.9419C11.3301 4.71436 11.6478 4.39293 11.6478 4.00007C11.6478 3.60721 11.3301 3.28578 10.9419 3.28578Z" fill="black" />
-                    </svg>
-                    <span style={{ marginLeft: '8px' }}>Пропустить</span>
-                  </Button>
-                  <Button
-                    type="primary"
-                    className='bidding-btn'
-                    style={{ float: 'right', marginRight: '10px' }}
-                    onClick={this.step}
-                  >
-                    <span style={{ marginLeft: '10px' }}>
-                      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 5.00004L9.63529 9.73219C9.30588 10.0893 8.79118 10.0893 8.46176 9.73219C8.13235 9.37504 8.13235 8.81701 8.46176 8.45987L11.6735 5.00004L8.46176 1.5179C8.13235 1.16076 8.13235 0.602722 8.46176 0.245579C8.79118 -0.111564 9.30588 -0.111564 9.63529 0.245579L14 5.00004Z" fill="white" />
-                        <path d="M-0.000100175 5.00003C-0.000100153 4.50896 0.370488 4.10718 0.82343 4.10718L12.7646 4.10718C13.2175 4.10718 13.5881 4.50896 13.5881 5.00003C13.5881 5.49111 13.2175 5.89289 12.7646 5.89289L0.82343 5.89289C0.370488 5.89289 -0.000100196 5.49111 -0.000100175 5.00003Z" fill="white" />
-                      </svg>
-                    </span>
-                    <span style={{ marginLeft: '15px' }}>Подтвердить</span>
-                  </Button>
-                </Card>
-              </div>
-            </div>
+            <Step1 />
           )}
-
 
         {
           (this.state.newWish && this.state.preference6)
@@ -1311,10 +1064,6 @@ class DashBoard extends Component {
                     <Popover content={rulesCount} placement="bottom"><span className='newForm4'>{points}</span></Popover>
                   </div>
                   <div style={{ textAlign: 'left', height: 'auto' }}>
-                    {/* <ItemList />
-                                         */}
-
-
 
                     {this.state.data.length === 0 &&
                       <div><h1>Вы не выбрали ни одной преференции для сохранения заявки</h1></div>
@@ -1322,7 +1071,6 @@ class DashBoard extends Component {
                     {this.state.data.length !== 0 &&
                       <ItemList func={this.mainPreference} data={this.state.data} />
                     }
-
                   </div>
 
                   <Button
@@ -1355,10 +1103,7 @@ class DashBoard extends Component {
                     </span>
                     <span style={{ marginLeft: '15px' }}>Назад</span>
                   </Button>
-
                 </Card>
-
-
               </div>
             </div>
           )
@@ -1367,143 +1112,6 @@ class DashBoard extends Component {
         {
           (this.state.newWish && this.state.preference1) &&
 
-          /*< div className="dashBoardContainer">
-            <div className="dashBoardContentDrag borderDesign">
-              <Card
-                size="small"
-                bordered={false}
-                className="userCardSlider"
-              >
-                <div className='newForm'>Новая Заявка &nbsp;
-                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M14 5.00004L9.63529 9.73219C9.30588 10.0893 8.79118 10.0893 8.46176 9.73219C8.13235 9.37504 8.13235 8.81701 8.46176 8.45987L11.6735 5.00004L8.46176 1.5179C8.13235 1.16076 8.13235 0.602722 8.46176 0.245579C8.79118 -0.111564 9.30588 -0.111564 9.63529 0.245579L14 5.00004Z"
-                      fill="#282828"
-                    />
-                    <path
-                      d="M-0.000100175 5.00003C-0.000100153 4.50896 0.370488 4.10718 0.82343 4.10718L12.7646 4.10718C13.2175 4.10718 13.5881 4.50896 13.5881 5.00003C13.5881 5.49111 13.2175 5.89289 12.7646 5.89289L0.82343 5.89289C0.370488 5.89289 -0.000100196 5.49111 -0.000100175 5.00003Z"
-                      fill="#282828"
-                    />
-                  </svg>
-                  <span className='newForm2'>&nbsp;&nbsp;&nbsp; 1. Направление полета</span> &nbsp;&nbsp;&nbsp;
-                  <span className='newForm3'>Выберите одни из вариантов</span>
-                  <Popover content={rulesCount} placement="bottom"><span className='newForm4'>{points}</span></Popover>
-                </div>
-
-                <div style={{ textAlign: 'center'}}>
-                  {/!* {this.props.flight_direction && (
-                    <RadioButtonList dispatcher_func={SetFlightDirection} data={this.props.flight_direction} />
-                  )} *!/}
-                  <div className={'main_radio_block'}>
-                    <div className={'sub_radio_block unselectable'} style={{ backgroundColor: '#FFDC82' }} onClick={this.checkboxTransAir}>
-                      <div className={'radio_circle'} style={{ backgroundColor: this.state.colorTransAir }}></div>
-                      <div className={'radio_text_wrapper'}>
-                        <p className={'radio_text'} style={{ color: 'black' }}>Трансатлантические</p>
-                      </div>
-                    </div>
-
-                    <div className={'sub_radio_block unselectable'} style={{ backgroundColor: '#7D58FF' }} onClick={this.checkboxContinent}>
-                      <div className={'radio_circle'} style={{ backgroundColor: this.state.colorContinent }}></div>
-                      <div className={'radio_text_wrapper'}>
-                        <p className={'radio_text'} style={{ color: 'black' }}>Континентальные</p>
-                      </div>
-                    </div>
-
-
-                    <Select
-                      showSearch
-                      style={{ width: '50%' }}
-                      placeholder="Приоритетный город"
-                      // defaultValue={['china']}
-                      onChange={handleChange}
-                    // optionLabelProp="label"
-                    >
-
-                      {this.state.cities && this.state.cities.map(city => (
-                        <Option value={city.cityName} key={city.cityName}>
-                          <div className="demo-option-label-item">
-                            {city.cityName}
-                          </div>
-                        </Option>
-                      ))}
-
-                    </Select>,
-
-
-
-                  </div>
-                  {/!* <RadioButtonList /> *!/}
-                </div>
-                <Button
-                    type="primary"
-                    className='bidding-btn-step--skip'
-                    onClick={this.step3Clear}
-                >
-                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.9996 3.99972L8.25842 0.214007C7.97607 -0.0717068 7.53489 -0.0717068 7.25254 0.214007C6.97018 0.499722 6.97018 0.946149 7.25254 1.23186L10.0055 4.01758L7.25254 6.78544C6.97018 7.07115 6.97018 7.51758 7.25254 7.80329C7.53489 8.08901 7.97607 8.08901 8.25842 7.80329L11.9996 3.99972Z" fill="black"/>
-                    <path d="M3.68824 3.28578H0.705882C0.317647 3.28578 0 3.60721 0 4.00007C0 4.39293 0.317647 4.71436 0.705882 4.71436H3.68824C4.07647 4.71436 4.39412 4.39293 4.39412 4.00007C4.39412 3.60721 4.07647 3.28578 3.68824 3.28578Z" fill="black"/>
-                    <path d="M10.9419 3.28578H6.65364C6.2654 3.28578 5.94775 3.60721 5.94775 4.00007C5.94775 4.39293 6.2654 4.71436 6.65364 4.71436H10.9419C11.3301 4.71436 11.6478 4.39293 11.6478 4.00007C11.6478 3.60721 11.3301 3.28578 10.9419 3.28578Z" fill="black"/>
-                  </svg>
-                  <span style={{ marginLeft: '8px' }}>Пропустить</span>
-                </Button>
-                {!this.state.checkboxTransAirCoontinent &&
-                  <Button
-                    type="primary"
-                    className='bidding-btn-step'
-                    style={{ float: 'right', marginRight: '0px' }}
-                    onClick={this.step3}
-                    disabled
-                  >
-                    <span style={{ marginLeft: '10px' }}>
-                      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 5.00004L9.63529 9.73219C9.30588 10.0893 8.79118 10.0893 8.46176 9.73219C8.13235 9.37504 8.13235 8.81701 8.46176 8.45987L11.6735 5.00004L8.46176 1.5179C8.13235 1.16076 8.13235 0.602722 8.46176 0.245579C8.79118 -0.111564 9.30588 -0.111564 9.63529 0.245579L14 5.00004Z" fill="white"/>
-                        <path d="M-0.000100175 5.00003C-0.000100153 4.50896 0.370488 4.10718 0.82343 4.10718L12.7646 4.10718C13.2175 4.10718 13.5881 4.50896 13.5881 5.00003C13.5881 5.49111 13.2175 5.89289 12.7646 5.89289L0.82343 5.89289C0.370488 5.89289 -0.000100196 5.49111 -0.000100175 5.00003Z" fill="white"/>
-                      </svg>
-                    </span>
-                    <span style={{ marginLeft: '15px' }}>Подтвердить</span>
-                  </Button>
-                }
-                {this.state.checkboxTransAirCoontinent &&
-                  <Button
-                    type="primary"
-                    className='bidding-btn-step'
-                    style={{ float: 'right', marginRight: '0px' }}
-                    onClick={this.step3}
-                  >
-                    <span style={{ marginLeft: '10px' }}>
-                      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 5.00004L9.63529 9.73219C9.30588 10.0893 8.79118 10.0893 8.46176 9.73219C8.13235 9.37504 8.13235 8.81701 8.46176 8.45987L11.6735 5.00004L8.46176 1.5179C8.13235 1.16076 8.13235 0.602722 8.46176 0.245579C8.79118 -0.111564 9.30588 -0.111564 9.63529 0.245579L14 5.00004Z" fill="white"/>
-                        <path d="M-0.000100175 5.00003C-0.000100153 4.50896 0.370488 4.10718 0.82343 4.10718L12.7646 4.10718C13.2175 4.10718 13.5881 4.50896 13.5881 5.00003C13.5881 5.49111 13.2175 5.89289 12.7646 5.89289L0.82343 5.89289C0.370488 5.89289 -0.000100196 5.49111 -0.000100175 5.00003Z" fill="white"/>
-                      </svg>
-                    </span>
-                    <span style={{ marginLeft: '15px' }}>Подтвердить</span>
-                  </Button>
-                }
-
-                {/!*
-                <Button
-                  type="primary"
-                  className='bidding-btn-step--back'
-                  style={{ float: 'right', marginRight: '0px' }}
-                  onClick={this.stepBack}
-                >
-                  <span style={{ marginLeft: '10px' }}>
-                      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <g clip-path="url(#clip0)">
-                      <path d="M0 4.99996L4.36471 0.267814C4.69412 -0.0893292 5.20882 -0.0893292 5.53824 0.267814C5.86765 0.624957 5.86765 1.18299 5.53824 1.54013L2.32647 4.99996L5.53824 8.4821C5.86765 8.83924 5.86765 9.39728 5.53824 9.75442C5.20882 10.1116 4.69412 10.1116 4.36471 9.75442L0 4.99996Z" fill="white"/>
-                      <path d="M14 4.99997C14 5.49104 13.6294 5.89282 13.1765 5.89282L1.2353 5.89282C0.782362 5.89282 0.411774 5.49104 0.411774 4.99997C0.411774 4.50889 0.782362 4.10711 1.2353 4.10711L13.1765 4.10711C13.6294 4.10711 14 4.50889 14 4.99997Z" fill="white"/>
-                      </g>
-                      <defs>
-                      <clipPath id="clip0">
-                      <rect width="10" height="14" fill="white" transform="translate(0 10) rotate(-90)"/>
-                      </clipPath>
-                      </defs>
-                      </svg>
-                    </span>
-                </Button> *!/}
-              </Card>
-            </div>
-          </div>*/
           < div className="dashBoardContainer">
             <div className="dashBoardContentDrag borderDesign">
               <Card
@@ -1604,27 +1212,7 @@ class DashBoard extends Component {
                   </Button>
                 }
 
-                {/*
-                <Button
-                  type="primary"
-                  className='bidding-btn-step--back'
-                  style={{ float: 'right', marginRight: '0px' }}
-                  onClick={this.stepBack}
-                >
-                  <span style={{ marginLeft: '10px' }}>
-                      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <g clip-path="url(#clip0)">
-                      <path d="M0 4.99996L4.36471 0.267814C4.69412 -0.0893292 5.20882 -0.0893292 5.53824 0.267814C5.86765 0.624957 5.86765 1.18299 5.53824 1.54013L2.32647 4.99996L5.53824 8.4821C5.86765 8.83924 5.86765 9.39728 5.53824 9.75442C5.20882 10.1116 4.69412 10.1116 4.36471 9.75442L0 4.99996Z" fill="white"/>
-                      <path d="M14 4.99997C14 5.49104 13.6294 5.89282 13.1765 5.89282L1.2353 5.89282C0.782362 5.89282 0.411774 5.49104 0.411774 4.99997C0.411774 4.50889 0.782362 4.10711 1.2353 4.10711L13.1765 4.10711C13.6294 4.10711 14 4.50889 14 4.99997Z" fill="white"/>
-                      </g>
-                      <defs>
-                      <clipPath id="clip0">
-                      <rect width="10" height="14" fill="white" transform="translate(0 10) rotate(-90)"/>
-                      </clipPath>
-                      </defs>
-                      </svg>
-                    </span>
-                </Button> */}
+
               </Card>
             </div>
           </div>
@@ -1756,12 +1344,6 @@ class DashBoard extends Component {
                   <Popover content={rulesCount} placement="bottom"><span className='newForm4'>{points}</span></Popover>
                 </div>
 
-                {/* <div style={{ textAlign: 'center', height: '300px' }}>
-                  {this.props.flight_direction && (
-                    <RadioButtonList_WorkDay dispatcher_func={SetFlightDirection} data={data_work_time} />
-                  )}
-                 
-                </div> */}
                 <div className={'main_radio_block'}>
                   <div className={'sub_radio_block unselectable'} style={{ backgroundColor: 'rgb(249,221,142)' }} onClick={this.checkboxWork}>
                     <div className={'radio_circle'} style={{ backgroundColor: this.state.colorWork }}></div>
@@ -1825,7 +1407,6 @@ class DashBoard extends Component {
                   </Button>
                 }
 
-
                 <Button
                   type="primary"
                   className='bidding-btn-step--back'
@@ -1850,7 +1431,6 @@ class DashBoard extends Component {
             </div>
           </div>
         }
-
 
         {
           (this.state.newWish && this.state.preference4) &&
@@ -1877,13 +1457,6 @@ class DashBoard extends Component {
                   <span className='newForm3'>Выберите одни из вариантов</span>
                   <Popover content={rulesCount} placement="bottom"><span className='newForm4'>{points}</span></Popover>
                 </div>
-
-                {/* <div style={{ textAlign: 'center', height: '300px' }}>
-                  {this.props.flight_direction && (
-                    <RadioButtonList_WorkTime dispatcher_func={SetFlightDirection} data={data_work_day} />
-                  )}
-                  
-                </div> */}
 
                 <div className={'main_radio_block'}>
                   <div className={'sub_radio_block unselectable'} style={{ backgroundColor: 'rgb(119,93,246)' }} onClick={this.checkboxLongDay}>
@@ -1946,7 +1519,6 @@ class DashBoard extends Component {
                   </Button>
                 }
 
-
                 <Button
                   type="primary"
                   className='bidding-btn-step--back'
@@ -1971,7 +1543,6 @@ class DashBoard extends Component {
             </div>
           </div>
         }
-
 
         {
           (this.state.newWish && this.state.preference5) &&
@@ -2020,12 +1591,7 @@ class DashBoard extends Component {
 
                       />
                     </div>
-                    {/* <div className="site-calendar-demo-card" style={{ backgroundColor: '#C2D5FB', width: '300px', borderRadius: '10px', marginRight: '21px' }}>
-                                            <CalendarWithButtonsPlusOneMonth onPanelChange={onPanelChange} />
-                                        </div>
-                                        <div className="site-calendar-demo-card" style={{ backgroundColor: '#C7F8CF', width: '300px', borderRadius: '10px' }}>
-                                            <CalendarWithButtonsPlusTwoMonth onPanelChange={onPanelChange} />
-                                        </div> */}
+
                   </div>
                 </div>
                 <Button
@@ -2098,12 +1664,6 @@ class DashBoard extends Component {
             </div>
           </div>
         }
-
-
-        {/* <ItemList dispatcher_func={SetPriority} data={this.props.priority_list_for_application}/>
-                <RadioButtonList dispatcher_func={SetFlightDirection} data={this.props.flight_direction}/>
-                <ItemList dispatcher_func={SetDayTime} data={this.props.daytime}/> */}
-
 
         <div className="dashBoardContainer">
           <div className="dashBoardContent">
@@ -2251,180 +1811,21 @@ class DashBoard extends Component {
             <Modal
               width={'80%'}
               title="Добро пожаловать"
-              visible={this.state.visible4}
-              onCancel={this.handleCancel4}
-
+              visible={this.state.visible}
+              onCancel={this.handleCancel}
               footer={[]}
             >
-
               <div style={{ textAlign: 'center' }}>
-
                 <Iframe className='iframe' url="/wow" width="100%" height={window.innerHeight - 70} />
-
                 <div className='registerForm'>
-
-
                 </div>
               </div>
             </Modal>
           </div>
 
-
-          {
-            this.state.modalUser && (
-              <div className='modalWidth'>
-                <Modal
-
-                  title="Детали полета"
-                  visible={this.state.visible2}
-                  onCancel={this.handleCancel2}
-
-                  footer={[]}
-                >
-                  <div style={{ textAlign: 'center' }}>
-                    Детальная информация по полету
-                    </div>
-                </Modal>
-              </div>
-            )
-          }
-
-          {
-            this.state.modalUser && (
-              <Modal
-                width='550px'
-                title="Детальная информация по полету"
-
-                visible={this.state.visible}
-                onCancel={this.handleCancel}
-                footer={[
-                  <div style={{ height: 60 }}>
-                    {/* <Icon
-                                        type="close-circle"
-                                        style={{ fontSize: "62px", float: "left" }}
-                                        onClick={this.handleCancel}
-                                    />
-                                    <img style={{ width: '130px' }} src={logo} alt="" />
-                                    <Icon
-                                        type="heart"
-                                        theme="twoTone"
-                                        twoToneColor="#eb2f96"
-                                        style={{ fontSize: "62px", float: "right" }}
-                                        onClick={this.isLike}
-                                    /> */}
-                  </div>,
-                ]}
-              >
-                <div style={{ textAlign: 'center' }} onClick={() => this.tryam()}>
-                  {/* <Carousel autoplay>
-                {this.state.modalUser.foto.map((f, i) =>
-                    <div key={i}>
-                        <Avatar size={180} src={f} />
-                    </div>
-                )}
-            </Carousel> */}
-                </div>
-
-                <p>
-                  <div style={{ height: '40%' }}>
-                    <div className="card-container">
-                      <br />
-                      <Tag color="green">
-                        <div style={{ color: 'black', fontSize: '16px' }}>
-                          Маршрут: {this.state.modalUser.where_from} - {this.state.modalUser.where_to}
-                        </div>
-                      </Tag>
-                      <br />
-                      <Tabs type="card">
-                        <TabPane tab="Общая информация" key="1">
-                          <p>
-                          </p>
-                          <Alert message={
-                            <p>
-                              <div style={{ color: 'black' }}>Информация
-                                </div>
-
-                            </p>
-                          } type="info" />
-                          <Alert message={
-                            <p>
-                              <div style={{ color: 'black' }}>Заголовок</div>
-                              <div className={'fontModal'}>Информация
-                                </div>
-
-                            </p>
-                          } type="info" />
-                          <Alert message={
-                            <p>
-                              <div style={{ color: 'black' }}>Заголовок</div>
-                              <div
-                                className={'fontModal'}>Информация
-                                </div>
-                            </p>
-                          } type="info" />
-                          <Alert message={
-                            <p>
-                              <div style={{ color: 'black' }}>Заголовок</div>
-                              <div
-                                className={'fontModal'}>Информация
-                                </div>
-                            </p>
-                          } type="info" />
-                        </TabPane>
-                        <TabPane tab="Детали" key="2">
-                          <p>
-                          </p>
-                          <Alert message={
-                            <p>
-                              <div style={{ color: 'black' }}>Информация
-                                </div>
-
-                            </p>
-                          } type="info" />
-                          <Alert message={
-                            <p>
-                              <div style={{ color: 'black' }}>Заголовок</div>
-                              <div className={'fontModal'}>Информация
-                                </div>
-
-                            </p>
-                          } type="info" />
-                          <Alert message={
-                            <p>
-                              <div style={{ color: 'black' }}>Заголовок</div>
-                              <div
-                                className={'fontModal'}>Информация
-                                </div>
-                            </p>
-                          } type="info" />
-                          <Alert message={
-                            <p>
-                              <div style={{ color: 'black' }}>Заголовок</div>
-                              <div
-                                className={'fontModal'}>Информация
-                                </div>
-                            </p>
-                          } type="info" />
-                        </TabPane>
-
-                      </Tabs>
-                    </div>
-                    {document.getElementById('container')}
-                  </div>
-
-                </p>
-              </Modal>
-
-            )
-          }
-
           <div className='rightBar'>
-
             <div className="site-card-border-less-wrapper">
-
               <div className="site-calendar-demo-card" style={{ backgroundColor: '#F6F9FE' }}>
-
-
                 <CalendarWithButtons highlighted={this.state.workingDays} />
               </div>
               <div className="userCardW" style={{ marginTop: '30px' }}>
@@ -2562,10 +1963,8 @@ class DashBoard extends Component {
 
 
         <footer className='footer-users'
-
           align={'center'}>
           <p>Зарегистрировано пользователей IBMiX : {this.state.usersLength}</p>
-
           <div dangerouslySetInnerHTML={{ __html: this.ym() }} />
         </footer>
       </div >
@@ -2598,7 +1997,5 @@ function mapDispatchToProps(dispatch) {
     },
   };
 }
-
-
 const Form_You = Form.create({ name: 'form_you' })(DashBoard)
 export default connect(mapStateToProps, mapDispatchToProps)(Form_You)

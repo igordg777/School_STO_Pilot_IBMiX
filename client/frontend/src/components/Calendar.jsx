@@ -103,7 +103,7 @@ class Calendar extends Component {
         }
 
         let days = this.props.highlighted;
-        console.log('Снова видны даты', days)
+
         if (days) {
             days.forEach(day => {
                 day.className = 'workDay'

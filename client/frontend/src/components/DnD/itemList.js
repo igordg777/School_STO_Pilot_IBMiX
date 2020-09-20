@@ -19,8 +19,6 @@ function ItemList(props) {
         new_wishes.splice(source.index, 1);
         new_wishes.splice(destination.index, 0, element);
         setWishes(new_wishes);
-        console.log(props.func(new_wishes))
-
     }
 
     return (

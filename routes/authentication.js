@@ -10,7 +10,6 @@ const saltRounds = 10;
 
 router.post('/api/signup', async (req, res, next) => {
   const { email } = req.body;
-  console.log(email);
 
   const dbemailComander = await Comander.findOne({ email });
   const dbemailPilot = await Pilot.findOne({ email });
@@ -224,9 +223,9 @@ router.post('/api/signup', async (req, res, next) => {
       password: await bcrypt.hash(password, saltRounds),
       keyForNewPassword: '',
     });
-    console.log('данные анкеты', email, firstName, lastName, crewRole, arrFlights, standingFromDate, standingFromDateInRole, reliabilityIndex, rewardsAndPunishments, phone, flagVisit, arrWish)
+
     req.session.user = anketa;
-    console.log('анкета', anketa)
+
     await anketa.save();
     res.status(200).json({ response: 'success' });
   } catch (e) {
@@ -245,7 +244,7 @@ router.post('/api/signup', async (req, res, next) => {
   let key = gen_password(20);
 
   const { email } = req.body;
-  console.log(email);
+
   try {
 
     const userComander = await Comander.findOne({ email });
@@ -283,8 +282,7 @@ router.post('/api/signup', async (req, res, next) => {
            
     `,
       });
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
 
     }
 
@@ -292,12 +290,12 @@ router.post('/api/signup', async (req, res, next) => {
 
     res.status(200).json({ response: 'success' });
   } catch (e) {
-    console.log(e);
+
 
     res.status(400).json({ response: 'fail' });
   }
 }).post('/set_new_password/', async (req, res) => {
-  console.log('Получаем данные через POST запрос', req.body);
+
   try {
     let keyForNewPassword = req.body.keyForNewPassword;
     const userComander = await Comander.findOne({ keyForNewPassword });
@@ -308,14 +306,14 @@ router.post('/api/signup', async (req, res, next) => {
       await userComander.save();
       res.status(200).send({ response: 'ok' });
     } else if (userPilot) {
-      console.log(req.body.password);
+
       userPilot.password = await bcrypt.hash(req.body.password, saltRounds);
       await userPilot.save();
       res.status(200).send({ response: 'ok' });
     }
 
   } catch (e) {
-    console.log(e);
+
     res.status(400).json({ response: 'fail' });
   }
 }).post('/api/login', async (req, res) => {
@@ -328,7 +326,7 @@ router.post('/api/signup', async (req, res, next) => {
     if (userComander &&
       (await bcrypt.compare(password, userComander.password))) {
       req.session.user = userComander;
-      console.log('userComander - login, success', userComander.town);
+
       res.status(200).
         json({
           response: 'success',
@@ -338,7 +336,7 @@ router.post('/api/signup', async (req, res, next) => {
     } else if (userPilot &&
       (await bcrypt.compare(password, userPilot.password))) {
       req.session.user = userPilot;
-      console.log('userPilot - login, success', userPilot.town);
+
       res.status(200).
         json({
           response: 'success',
@@ -346,7 +344,7 @@ router.post('/api/signup', async (req, res, next) => {
           town: userPilot.town,
         });
     } else {
-      console.log('fail');
+
       res.status(400).json({ response: 'fail' });
     }
   } catch (e) {
