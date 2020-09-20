@@ -23,7 +23,7 @@ router.post('/api/signup', async (req, res, next) => {
   }
 }).post('/api/signup/noowner', async (req, res, next) => {
 
-  const { email, firstName, lastName, crewRole, password } = req.body;
+  const { email, firstName, lastName, password } = req.body;
   let arrFlights = [
     {
       "where_to": "Париж",
