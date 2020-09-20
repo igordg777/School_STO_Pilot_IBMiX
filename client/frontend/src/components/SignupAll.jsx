@@ -19,7 +19,7 @@ const openNotification = (placement, icon, title, message) => {
   notification.open({
     message: title,
     description:
-    message,
+      message,
     placement,
     icon: <Icon type={icon} style={{ color: '#108ee9' }} />,
     duration: 3
@@ -77,25 +77,27 @@ class Signup extends Component {
         const result = await response.json();
 
         if (result.response === 'success') {
-          if (crewRole === 'пилот') {
-            message.success(`Новый пилот успешно зарегистрирован`, 5)
-            this.props.cookies.set('Role', crewRole);
-            this.props.cookies.set('station', 'station');
-            this.props.cookies.set('isLogin', true, { path: "/" });
-            this.setState({
-              isRedirect: true,
+          // if (crewRole === 'пилот') {
+          //   message.success(`Новый пилот успешно зарегистрирован`, 5)
+          //   this.props.cookies.set('Role', crewRole);
+          //   this.props.cookies.set('station', 'station');
+          //   this.props.cookies.set('isLogin', true, { path: "/" });
+          //   this.setState({
+          //     isRedirect: true,
 
-            })
-          } else {
-            message.success(`Новый командир эскадрильи успешно зарегистрирован`, 5)
-            this.props.cookies.set('Role', crewRole);
-            this.props.cookies.set('station', 'station');
-            this.props.cookies.set('isLogin', true, { path: "/" });
-            this.setState({
-              isRedirect: true,
+          //   })
+          // } else {
+          // message.success(`Новый командир эскадрильи успешно зарегистрирован`, 5)
+          message.success(`Новый пользователь успешно зарегистрирован`, 5)
 
-            })
-          }
+          this.props.cookies.set('Role', crewRole);
+          this.props.cookies.set('station', 'station');
+          this.props.cookies.set('isLogin', true, { path: "/" });
+          this.setState({
+            isRedirect: true,
+
+          })
+          // }
 
 
           // window.location.href = 'http://какой то адрес/signupAll';
@@ -146,36 +148,36 @@ class Signup extends Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-        <div className='registerFormMain'>
-          <Card style={{ borderRadius: '10px', marginTop: '2%', marginBottom: '8%', backgroundColor: 'white' }}>
-            <div style={{ textAlign: 'center' }}>
-              <img style={{ width: '130px' }} src={logo} alt="" />
-              <h3 style={{ color: '#4a76a8' }}>
-                Форма регистрации пилотов<br /> Авиакомпания Х</h3>
-            </div>
-            <br />
-            <Form onSubmit={this.handleSubmit}>
-              <Form.Item>
-                {getFieldDecorator('firstName', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Пожалуйста, введите имя!',
-                    },
-                  ],
-                })(<Input placeholder="Имя" />)}
-              </Form.Item>
-              <Form.Item>
-                {getFieldDecorator('lastName', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Пожалуйста, введите фамилию!',
-                    },
-                  ],
-                })(<Input placeholder="Фамилия" />)}
-              </Form.Item>
-              {/* <Form.Item>
+      <div className='registerFormMain'>
+        <Card style={{ borderRadius: '10px', marginTop: '2%', marginBottom: '8%', backgroundColor: 'white' }}>
+          <div style={{ textAlign: 'center' }}>
+            <img style={{ width: '130px' }} src={logo} alt="" />
+            <h3 style={{ color: '#4a76a8' }}>
+              Форма регистрации пилотов<br /> Авиакомпания Х</h3>
+          </div>
+          <br />
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Item>
+              {getFieldDecorator('firstName', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Пожалуйста, введите имя!',
+                  },
+                ],
+              })(<Input placeholder="Имя" />)}
+            </Form.Item>
+            <Form.Item>
+              {getFieldDecorator('lastName', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Пожалуйста, введите фамилию!',
+                  },
+                ],
+              })(<Input placeholder="Фамилия" />)}
+            </Form.Item>
+            {/* <Form.Item>
                             {getFieldDecorator('town', {
                                 rules: [
                                     {
@@ -202,65 +204,65 @@ class Signup extends Component {
 
                             )}
                         </Form.Item> */}
-              <Form.Item>
-                {getFieldDecorator('email', {
-                  rules: [
-                    {
-                      type: 'email',
-                      message: 'Введите правильный ID!',
-                    },
-                    {
-                      required: true,
-                      message: 'Пожалуйста, введите ID',
-                    },
-                  ],
-                })(<Input placeholder="E-mail" />)}
-              </Form.Item>
+            <Form.Item>
+              {getFieldDecorator('email', {
+                rules: [
+                  {
+                    type: 'email',
+                    message: 'Введите правильный ID!',
+                  },
+                  {
+                    required: true,
+                    message: 'Пожалуйста, введите ID',
+                  },
+                ],
+              })(<Input placeholder="E-mail" />)}
+            </Form.Item>
 
 
 
-              <Form.Item>
-                {getFieldDecorator('crewRole', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Пожалуйста, введите цель регистрации!',
-                    },
-                    {
-                      validator: this.validateToNextPassword,
-                    },
-                  ]
-                })(
-                    <Radio.Group>
-                      <Radio value={'пилот'}>Пилот</Radio>
-                      <Radio value={'командир'}>Командир эскадрильи</Radio>
-                    </Radio.Group>
-                )}
-              </Form.Item>
+            <Form.Item>
+              {getFieldDecorator('crewRole', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Пожалуйста, введите цель регистрации!',
+                  },
+                  {
+                    validator: this.validateToNextPassword,
+                  },
+                ]
+              })(
+                <Radio.Group>
+                  <Radio value={'пилот'}>Пилот</Radio>
+                  <Radio value={'командир'}>Командир эскадрильи</Radio>
+                </Radio.Group>
+              )}
+            </Form.Item>
 
-              <Form.Item hasFeedback>
-                {getFieldDecorator('password', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Пожалуйста, введите пароль!',
-                    },
-                    {
-                      validator: this.validateToNextPassword,
-                    },
-                  ],
-                })(<Input.Password style={{ width: '250px' }} placeholder="Придумайте пароль профиля" />)}
-              </Form.Item>
+            <Form.Item hasFeedback>
+              {getFieldDecorator('password', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Пожалуйста, введите пароль!',
+                  },
+                  {
+                    validator: this.validateToNextPassword,
+                  },
+                ],
+              })(<Input.Password style={{ width: '250px' }} placeholder="Придумайте пароль профиля" />)}
+            </Form.Item>
 
-              < Form.Item>
-                <Button style={{ backgroundColor: '#4A76A8', width: '100%', align: "center" }} htmlType="submit" loading={this.state.iconLoading} icon='solution'>
-                  Зарегитрировать
+            < Form.Item>
+              <Button style={{ backgroundColor: '#4A76A8', width: '100%', align: "center" }} htmlType="submit" loading={this.state.iconLoading} icon='solution'>
+                Зарегитрировать
                 </Button>
-              </Form.Item>
-            </Form>
-            <div align={'center'}><br /><Link to={"/login"}>Войти</Link><br /><Link to={"/our_company"}>О нас</Link></div>
-          </Card>
-        </div >
+            </Form.Item>
+          </Form>
+          <div align={'center'}><br /><Link to={"/login"}>Войти</Link><br /><Link to={"/our_company"}>О нас</Link></div>
+        </Card>
+      </div >
 
     );
   }
