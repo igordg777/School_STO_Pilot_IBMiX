@@ -217,13 +217,16 @@ router.post('/api/signup', async (req, res, next) => {
   const phone = '21-21-21';
   const flagVisit = false;
   const crewRole = "КВС"
+
   try {
     const anketa = new Pilot({
       email, firstName, lastName, crewRole, arrFlights, standingFromDate, standingFromDateInRole, reliabilityIndex, rewardsAndPunishments, phone, flagVisit, arrWish,
       password: await bcrypt.hash(password, saltRounds),
       keyForNewPassword: '',
     });
+    console.log('данные анкеты', email, firstName, lastName, crewRole, arrFlights, standingFromDate, standingFromDateInRole, reliabilityIndex, rewardsAndPunishments, phone, flagVisit, arrWish)
     req.session.user = anketa;
+    console.log('анкета', anketa)
     await anketa.save();
     res.status(200).json({ response: 'success' });
   } catch (e) {
