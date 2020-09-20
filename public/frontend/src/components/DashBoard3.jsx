@@ -186,6 +186,7 @@ class DashBoard extends Component {
                 this.props.user.wishForm = result.wishForm
             }
 
+            // Reserve
             //     this.props.cookies.set('isLogin', true, { path: "/" });
             //     this.props.cookies.set('Role', result.crewRole, { path: "/" });
             //     this.props.addIsLogin(true);
